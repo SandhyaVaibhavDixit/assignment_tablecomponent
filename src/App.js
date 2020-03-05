@@ -1,24 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import Table from './components/TableBuilder/TableBuilder';
+
 import './App.css';
 
 function App() {
+  const tableStructure = [
+    {
+      name:'Item',
+      inputType: 'select'
+    },
+    {
+      name:'Material Fee',
+      inputType: 'currency'
+    },  
+    {
+      name:'Packing Fee',
+      inputType: 'currency'
+    },
+    {
+      name:'Unpacking Fee',
+      inputType: 'currency'
+    }
+];
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Table component.
+      <Table tableStructure={tableStructure}/>
     </div>
   );
 }
