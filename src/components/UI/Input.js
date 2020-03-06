@@ -2,7 +2,6 @@ import React from 'react';
 
 const input = (props) => {
     let inputElement = null;
-
     switch (props.elementType) {
         case ('input'):
             inputElement = <input
@@ -22,11 +21,11 @@ const input = (props) => {
                     value={props.value}
                     name={props.name}
                     onChange={props.changed}>
-                    {/* {props.options.map(option => (
+                    {props.options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.displayValue}
                         </option>
-                    ))} */}
+                    ))}
                 </select>
             );
             break;

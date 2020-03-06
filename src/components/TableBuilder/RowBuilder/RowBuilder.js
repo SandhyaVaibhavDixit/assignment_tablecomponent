@@ -28,6 +28,7 @@ export const RowBuilder = (props) => {
                             name={column.name}
                             elementType={column.inputType}
                             value={column.value}
+                            options={column.options}
                             changed={event => inputChangedHandler(event)} />
                     </td>);
             })
