@@ -7,19 +7,23 @@ import './App.css';
 function App() {
   const tableStructure = [
     {
-      name:'Item',
+      text:'Item',
+      name: 'item',
       inputType: 'select'
     },
     {
-      name:'Material Fee',
+      text:'Material Fee',
+      name: 'materialFee',
       inputType: 'currency'
     },  
     {
-      name:'Packing Fee',
+      text:'Packing Fee',
+      name: 'packingFee',
       inputType: 'currency'
     },
     {
-      name:'Unpacking Fee',
+      text:'Unpacking Fee',
+      name: 'unpackingFee',
       inputType: 'currency'
     }
 ];

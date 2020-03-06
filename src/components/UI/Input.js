@@ -7,17 +7,20 @@ const input = (props) => {
         case ('input'):
             inputElement = <input
                 value={props.value}
+                name={props.name}
                 onChange={props.changed} />;
             break;
         case ('currency'):
             inputElement = <input
                 value={'$' + props.value}
+                name={props.name}
                 onChange={props.changed} />;
             break;
         case ('select'):
             inputElement = (
                 <select
                     value={props.value}
+                    name={props.name}
                     onChange={props.changed}>
                     {/* {props.options.map(option => (
                         <option key={option.value} value={option.value}>
@@ -30,6 +33,7 @@ const input = (props) => {
         default:
             inputElement = <input
                 value={props.value}
+                name={props.name}
                 onChange={props.changed} />;
     }
 

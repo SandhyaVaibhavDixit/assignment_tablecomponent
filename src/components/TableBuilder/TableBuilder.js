@@ -1,60 +1,91 @@
 import React, { useState } from 'react';
-import Raw from './RowBuilder/RawBuilder';
+import { RowBuilder } from './RowBuilder/RowBuilder';
 
 const TableBuilder = props => {
     const initialState = [
         {
-            materialFee: 0.00,
-            item: '',
-            packingFee: 0.00,
-            unpackingFee: 0.00
+            materialFee: 10.00,
+            item: 'value',
+            packingFee: 2.00,
+            unpackingFee: 3.00
+        },
+        {
+            materialFee: 2.00,
+            item: 'value 1',
+            packingFee: 1.00,
+            unpackingFee: 4.00
+        },
+        {
+            materialFee: 2.00,
+            item: 'value 2',
+            packingFee: 1.00,
+            unpackingFee: 5.00
         },
     ];
-
-    const [state, setState] = useState(initialState);
-    const updateState = data => setState(prevState => ({ ...prevState, ...data }));
-
-    const getHeader = (tableStructure) =>{
-        let header = tableStructure.map(function (eachObject) {
-            return(eachObject.name);
+    const columns = props.tableStructure;
+    let row = 0;
+    const columnData = initialState.map((eachData) => {
+        row++;
+        let columnCnt = 0;
+        const check = columns.map((column) => {
+            columnCnt++;
+            return {
+                ...column,
+                key: "row" + row,
+                name: "row" + row + "Col" + columnCnt,
+                value: eachData[column.name]
+            }
         });
+        return check;
+    });
 
+    const [state, setState] = useState(columnData);
+
+    const getHeader = (tableStructure) => {
+        const header = tableStructure.map(header => header.name);
         return header;
     }
-    const transformPropsToHeaderAndRows = (tableStructure) => {
-        
-        const abc = JSON.stringify(tableStructure);
-        console.log(abc);
 
-        // //Table body column types
-        // let row;
-        // var result = tableStructure.map(function(eachObject) {
-        //     return(eachObject.name);
-        // });
+    const addItemClickHandler = () => {
+        let rowCnt = state.length;
+        let columnCnt = 0;
+        const emptyState = columns.map((column) => {
+            rowCnt++;
+            columnCnt++;
+            return {
+                ...column,
+                key: "row" + rowCnt,
+                name: "row" + rowCnt + "Col" + columnCnt,
+                value: ''
+            }
+        });
 
-        // var bodyDefination = tableStructure.reduce(function (acc, cur, i) {
-        //     acc[i] = { ...cur, value: ""};
-        //     return acc;
-        // }, {});
-        // console.log(bodyDefination);
-
-    };
-
-    const addItemClickHandler = (event) => {
-        return null;
+        setState(state.concat([emptyState]));
     }
 
-    const abc = transformPropsToHeaderAndRows(props.tableStructure);
+    const inputChangedHandler = (event) => {
+        const value = event.target.value.replace('$', '').trim();
+
+        //Copy state.
+        let currentData = state;
+        
+        currentData = currentData.map(eachObject => {
+            return eachObject.map(eachData => (eachData.name === event.target.name ? { ...eachData, value } : eachData))
+        });
+
+        //Update state.
+        setState(currentData);
+    };
 
     return (
         <div>
             <table>
                 <thead>
                     {/* render header */}
-                    <Raw type="header" columnData={getHeader(props.tableStructure)} />
+                    <RowBuilder columnHeader={getHeader(props.tableStructure)} />
                 </thead>
                 <tbody>
-                    <Raw type="body" columnData={props.tableStructure} />
+                    <RowBuilder columnData={state} inputChangedHandler={inputChangedHandler} />
                 </tbody>
             </table>
             <button onClick={addItemClickHandler}> Add Item</button>
