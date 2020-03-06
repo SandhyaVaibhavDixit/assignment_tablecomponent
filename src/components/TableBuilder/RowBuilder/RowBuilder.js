@@ -1,9 +1,10 @@
 import React from 'react';
 import Input from '../../UI/Input';
 
-export const RowBuilder = (props) => {
-    let { columnHeader, columnData , inputChangedHandler} = props;
+import DeleteButtonImage from '../../../assets/icons/delete.png';
 
+export const RowBuilder = (props) => {
+    const { columnHeader, columnData, inputChangedHandler, deleteButtonClickeHandler } = props;
     let columns = {};
     if (columnHeader !== undefined) {
         columns = columnHeader.map(eachcolumn => {
@@ -14,13 +15,11 @@ export const RowBuilder = (props) => {
             );
         });
 
-        columns = <tr key="header">{columns}</tr>
+        columns = <tr key="header">{columns}<th></th></tr>
     }
 
     if (columnData !== undefined) {
-        let row = 0;
         columns = columnData.map(eachcolumn => {
-            row++;
             const allTD = (eachcolumn.map(column => {
                 return (
                     <td key={column.name} >
@@ -33,12 +32,19 @@ export const RowBuilder = (props) => {
                     </td>);
             })
             );
-            return (<tr key={row}>{allTD}</tr>);
+            return (<tr key={eachcolumn[0].key}>
+                {allTD}
+                <td>
+                    <button id={eachcolumn[0].key}
+                        onClick={event => deleteButtonClickeHandler(event)}>
+                    <img id={eachcolumn[0].key} src={DeleteButtonImage} alt="Delete"></img>
+                    </button>
+                </td>
+            </tr>);
         });
     }
 
     return (
         columns
-        //        columnHeader ? (<tr>{columns}</tr>) : {columns}
     )
 }

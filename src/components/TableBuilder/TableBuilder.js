@@ -42,20 +42,19 @@ const TableBuilder = props => {
     const [state, setState] = useState(columnData);
 
     const getHeader = (tableStructure) => {
-        const header = tableStructure.map(header => header.name);
-        return header;
+        const header = tableStructure.map(header => header.text);
+        return header;  
     }
 
     const addItemClickHandler = () => {
-        let rowCnt = state.length;
+        let rowNo = Math.floor(Math.random() * 100); //state.length;
         let columnCnt = 0;
         const emptyState = columns.map((column) => {
-            rowCnt++;
             columnCnt++;
             return {
                 ...column,
-                key: "row" + rowCnt,
-                name: "row" + rowCnt + "Col" + columnCnt,
+                key: "row" + rowNo,
+                name: "row" + rowNo + "Col" + columnCnt,
                 value: ''
             }
         });
@@ -67,25 +66,37 @@ const TableBuilder = props => {
         const value = event.target.value.replace('$', '').trim();
 
         //Copy state.
-        let currentData = state;
-        
-        currentData = currentData.map(eachObject => {
+        let currentState = state;
+
+        currentState = currentState.map(eachObject => {
             return eachObject.map(eachData => (eachData.name === event.target.name ? { ...eachData, value } : eachData))
         });
 
         //Update state.
-        setState(currentData);
+        setState(currentState);
     };
+
+    const deleteButtonClickeHandler = (event) => {
+        //Derive row to be deleted.
+        const rowId = event.target.id;
+
+        //Copy state.
+        let currentState = state;
+
+        currentState = currentState.filter(eachObject => (eachObject[0].key !== rowId));
+
+        //Update state.
+        setState(currentState);
+    }
 
     return (
         <div>
             <table>
                 <thead>
-                    {/* render header */}
                     <RowBuilder columnHeader={getHeader(props.tableStructure)} />
                 </thead>
                 <tbody>
-                    <RowBuilder columnData={state} inputChangedHandler={inputChangedHandler} />
+                    <RowBuilder columnData={state} inputChangedHandler={inputChangedHandler} deleteButtonClickeHandler={deleteButtonClickeHandler} />
                 </tbody>
             </table>
             <button onClick={addItemClickHandler}> Add Item</button>
