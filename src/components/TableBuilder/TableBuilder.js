@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
+import './TableBuilder.css';
 
 import AddButtonImage from '../../assets/icons/plus.png';
 
@@ -105,7 +106,7 @@ const TableBuilder = props => {
 
     return (
         <div>
-            <table>
+            <table className="Table">
                 <thead>
                     <RowBuilder columnHeader={getHeader(props.tableStructure)} />
                 </thead>
@@ -113,7 +114,10 @@ const TableBuilder = props => {
                     <RowBuilder columnData={state} inputChangedHandler={inputChangedHandler} deleteButtonClickeHandler={deleteButtonClickeHandler} />
                 </tbody>
             </table>
-            <button onClick={addItemClickHandler}> <img src={AddButtonImage} alt="Add"></img> Add Item </button>
+            <button className="imagebutton" onClick={addItemClickHandler}> 
+                <img src={AddButtonImage} alt="Add"></img> 
+                <span>Add Item</span> 
+            </button>
         </div>
     );
 };

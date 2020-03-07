@@ -1,3 +1,51 @@
-.Table{
-    
+.Table {
+    width: 100%;
+    padding: 50px;
+    border: 0px none;
+    border-spacing: 0 15px;
+    outline: none;
+    text-align: left !important;
+    /* background-color:  #eee; */
+}
+
+.Table tr {
+    outline: none;
+    background-color: #fff;
+}
+
+.Table td  th{
+    text-align: left !important;
+    outline: none;
+}
+
+.Table tr:hover{
+    background-color:  #eee;
+}
+
+.Table tr td:first-child {
+    padding-left: 10px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+
+}
+
+.Table tr td:last-child {
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+}
+
+.imagebutton {
+    border: 0;
+    background: transparent;
+    text-align: center;
+    padding: 1px 6px 1px 6px;
+}
+
+.imagebutton > img,
+.imagebutton > span {
+  vertical-align: middle;
 }

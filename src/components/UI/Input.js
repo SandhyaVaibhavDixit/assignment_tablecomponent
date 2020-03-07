@@ -1,16 +1,18 @@
 import React from 'react';
-
+import './Input.css'
 const input = (props) => {
     let inputElement = null;
     switch (props.elementType) {
         case ('input'):
             inputElement = <input
                 value={props.value}
+                className="commonStyle"
                 name={props.name}
                 onChange={props.changed} />;
             break;
         case ('currency'):
-            inputElement = <input
+                inputElement = <input
+                className="commonStyle"
                 value={'$' + props.value}
                 name={props.name}
                 onChange={props.changed} />;
@@ -19,6 +21,7 @@ const input = (props) => {
             inputElement = (
                 <select
                     value={props.value}
+                    className="commonStyle"
                     name={props.name}
                     onChange={props.changed}>
                     {props.options.map(option => (
@@ -32,6 +35,7 @@ const input = (props) => {
         default:
             inputElement = <input
                 value={props.value}
+                className="commonStyle"
                 name={props.name}
                 onChange={props.changed} />;
     }

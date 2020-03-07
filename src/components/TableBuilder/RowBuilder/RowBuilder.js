@@ -1,5 +1,6 @@
 import React from 'react';
 import Input from '../../UI/Input';
+import './RowBuilder.css';
 
 import DeleteButtonImage from '../../../assets/icons/delete.png';
 
@@ -9,9 +10,9 @@ export const RowBuilder = (props) => {
     if (columnHeader !== undefined) {
         columns = columnHeader.map(eachcolumn => {
             return (
-                <th key={eachcolumn}>
-                    {eachcolumn}
-                </th>
+                <td key={eachcolumn}>
+                    <b>{eachcolumn}</b>
+                </td>
             );
         });
 
@@ -36,7 +37,7 @@ export const RowBuilder = (props) => {
             return (<tr key={eachcolumn[0].key}>
                 {allTD}
                 <td>
-                    <button id={eachcolumn[0].key}
+                    <button className="imagebutton" id={eachcolumn[0].key}
                         onClick={event => deleteButtonClickeHandler(event)}>
                     <img id={eachcolumn[0].key} src={DeleteButtonImage} alt="Delete"></img>
                     </button>

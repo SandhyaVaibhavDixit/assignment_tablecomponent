@@ -31,7 +31,6 @@ function App() {
 
   return (
     <div className="App">
-      Table component.
       <Table tableStructure={tableStructure}/>
     </div>
   );
