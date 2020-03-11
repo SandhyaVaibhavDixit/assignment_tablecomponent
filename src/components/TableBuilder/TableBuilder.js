@@ -46,7 +46,7 @@ const TableBuilder = props => {
             return {
                 ...column,
                 isValid: true,
-                key: "row" + row,
+                rowKey: "row" + row,
                 options: column.inputType === 'select' ? itemSelectOptions : '',
                 name: "row" + row + "Col" + columnCnt,
                 value: column.inputType === 'select' ? 'Tape' : eachData[column.name]
@@ -57,21 +57,22 @@ const TableBuilder = props => {
 
     const [state, setState] = useState(initialState);
 
-    const getHeaderDataStructure = (tableStructure) => {
+    const getTableHeader = (tableStructure) => {
         const header = tableStructure.map(header => header.text);
         return header;
     }
 
-    const addItemClickHandler = () => {
+    const onAddItem = () => {
         let rowNo = Math.floor(Math.random() * 100); //state.length;
         let columnCnt = 0;
         const emptyState = columns.map((column) => {
             columnCnt++;
             return {
                 ...column,
-                key: "row" + rowNo,
+                isValid: true,
+                rowKey: "row" + rowNo,
                 name: "row" + rowNo + "Col" + columnCnt,
-                value: column.inputType === 'select' ? 'Tape' : '',
+                value: column.inputType === 'select' ? 'Tape' : 0.00,
                 options: column.inputType === 'select' ? itemSelectOptions : ''
             }
         });
@@ -79,50 +80,54 @@ const TableBuilder = props => {
         setState(state.concat([emptyState]));
     }
 
-    const inputChangedHandler = (e) => {
+    const onChange = (e) => {
+        let enteredValue = (e.target.type === 'text') ? 
+                                e.target.value.replace('$', '').trim() : 
+                                e.target.value;
 
-        let enteredValue = e.target.type === 'text' ? e.target.value.replace('$', '').trim() : e.target.value;
         const inputType = e.target.getAttribute('inputtype');
         let isValid = true;
 
-        //enteredValue = parseFloat(enteredValue).toFixed(2);
+        let value = enteredValue;
 
-        switch(inputType){
+        switch (inputType) {
             case 'currency':
-                isValid = checkValidity(enteredValue, {required: true, isFloat: true});
+                isValid = checkValidity(enteredValue, { required: true, isFloat: true });
+                value = (isValid === true) ?
+                            parseFloat(enteredValue).toFixed(2) :
+                            enteredValue;
                 break;
             default:
-                isValid = checkValidity(enteredValue, {required: true});
+                isValid = checkValidity(enteredValue, { required: true });
                 break;
         }
 
         //Copy state.
-        let currentState = [...state];
-        const value = enteredValue;
-
-        currentState = currentState.map(eachObject => {
+        const previousState = [...state];
+        
+        const newState = previousState.map(eachObject => {
             return eachObject.map(eachData => (eachData.name === e.target.name ? { ...eachData, value, isValid } : eachData))
         });
 
         //Update state.
-        setState(currentState);
+        setState(newState);
     };
 
-    const deleteButtonClickeHandler = (e) => {
+    const onDelete = (e) => {
 
         //Derive row to be deleted.
-        const rowId = e.target.id;
+        const rowKey = e.target.id;
 
         //Copy state.
-        let currentState = [...state];
+        const previousState = [...state];
 
-        currentState = currentState.filter(eachObject => (eachObject[0].key !== rowId));
+        const newState = previousState.filter(eachObject => (eachObject[0].rowKey !== rowKey));
 
         //Update state.
-        setState(currentState);
+        setState(newState);
     }
 
-    const headerData = getHeaderDataStructure(props.tableStructure);
+    const headerData = getTableHeader(props.tableStructure);
 
     const tableHeaderRenderer = headerData.map(eachcolumn => {
         return (
@@ -135,7 +140,7 @@ const TableBuilder = props => {
     const tableRowData = [...state];
     const tableBodyRenderer = tableRowData.map(eachTableRow => {
         return (
-            <RowBuilder rowData={eachTableRow} inputChangedHandler={inputChangedHandler} deleteButtonClickeHandler={deleteButtonClickeHandler} />
+            <RowBuilder key={eachTableRow[0].rowKey} rowData={eachTableRow} onChange={onChange} onDelete={onDelete} />
         )
     })
 
@@ -151,7 +156,7 @@ const TableBuilder = props => {
                     {tableBodyRenderer}
                 </tbody>
             </table>
-            <button className="imagebutton" onClick={addItemClickHandler}>
+            <button className="imagebutton" onClick={onAddItem}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>

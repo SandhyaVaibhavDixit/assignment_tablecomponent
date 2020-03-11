@@ -1,23 +1,22 @@
 import React from 'react';
 import classes from './index.css';
 
-export const input = (props) => {
+export const Input = (props) => {
     const inputClasses = ['commonStyle'];
-    console.log(props);
+
     if (!props.isValid) {
         inputClasses.push('Invalid');
     }
 
     const inputElement = <input
+                            key         ={props.name}
+                            name        ={props.name}
                             className   ={inputClasses.join(' ')}
                             value       ={props.inputType === 'currency' ? `$ ${props.value}` : props.value}
-                            name        ={props.name}
                             inputtype   ={props.inputType}
-                            onChange    ={props.changed} />;
+                            onChange    ={props.onChanged} />;
 
     return (
         inputElement
     );
 };
-
-export default input;

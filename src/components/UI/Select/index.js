@@ -2,12 +2,13 @@ import React from 'react';
 
 import './index.css'
 
-export const select = (props) => {
+export const Select = (props) => {
 
     const selectElement = (
         <select
             value       = {props.value}
-            className   ="commonStyle"
+            className   = "commonStyle"
+            key         = {props.name}
             name        = {props.name}
             onChange    = {props.changed}>
 
@@ -24,6 +25,3 @@ export const select = (props) => {
         selectElement
     );
 };
-
-
-export default select;

@@ -27,9 +27,8 @@ export const checkValidity = ( value, rules ) => {
     }
 
     if( rules.isFloat ){
-        //const pattern = /^-?[0-9]*[.][0-9]+$/;
-        const pattern = /^\d+\.\d{0,2}$/;
-        //const pattern = /[0-9]+([.//,][0-9]+)?/;
+        const pattern = /^\d+(\.\d{1,2})?$/;
+        //for strict float /^\d+\.\d{0,2}$/;
         isValid = pattern.test( value ) && isValid
     }
 

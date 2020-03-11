@@ -1,38 +1,37 @@
 import React from 'react';
-import Input from '../../UI/Input/index';
-import Select from '../../UI/Select/index';
+import { Input } from '../../UI/Input';
+import { Select } from '../../UI/Select';
 
 import './RowBuilder.css';
 
-import DeleteButtonImage from '../../../assets/icons/delete.png';
+import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { rowData, inputChangedHandler, deleteButtonClickeHandler } = props;
+    const { rowData, onChange, onDelete } = props;
 
     const getElmentByType = (column) => {
         switch (column.inputType) {
-            case 'input':
-            case 'currency':
-            default:
-                return (
-                    <Input
-                        isValid     ={column.isValid} 
-                        key         ={column.key}
-                        name        ={column.name}
-                        inputType ={column.inputType}
-                        value       ={column.value}
-                        changed     ={e => inputChangedHandler(e)} />
-                );
             case 'select':
                 return (
                     <Select
                         value       ={column.value}
                         className   ="commonStyle"
                         name        ={column.name}
-                        changed     ={e => inputChangedHandler(e)}
+                        changed     ={e => onChange(e)}
                         options     ={column.options}
                     />
                 )
+            case 'input':
+            case 'currency':
+            default:
+                return (
+                    <Input
+                        isValid     ={column.isValid} 
+                        name        ={column.name}
+                        inputType   ={column.inputType}
+                        value       ={column.value}
+                        onChanged   ={e => onChange(e)} />
+                );
         }
     }
 
@@ -44,17 +43,17 @@ export const RowBuilder = (props) => {
     });
 
     return (
-        <tr key={rowData[0].key}>
+        <tr key={rowData[0].rowKey}>
             {rowContent}
             <td>
                 <button
                     className="imagebutton"
-                    id={rowData[0].key}
-                    onClick={event => deleteButtonClickeHandler(event)}>
+                    id={rowData[0].rowKey}
+                    onClick={event => onDelete(event)}>
 
                     <img
-                        id={rowData[0].key}
-                        src={DeleteButtonImage}
+                        id={rowData[0].rowKey}
+                        src={DeleteIcon}
                         alt="Delete">
                     </img>
                 </button>
