@@ -1,52 +1,64 @@
 import React from 'react';
-import Input from '../../UI/Input';
+import Input from '../../UI/Input/index';
+import Select from '../../UI/Select/index';
+
 import './RowBuilder.css';
 
 import DeleteButtonImage from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { columnHeader, columnData, inputChangedHandler, deleteButtonClickeHandler } = props;
-    let columns = {};
-    if (columnHeader !== undefined) {
-        columns = columnHeader.map(eachcolumn => {
-            return (
-                <td key={eachcolumn}>
-                    <b>{eachcolumn}</b>
-                </td>
-            );
-        });
+    const { rowData, inputChangedHandler, deleteButtonClickeHandler } = props;
 
-        columns = <tr key="header">{columns}<th></th></tr>
-    }
-
-    if (columnData !== undefined) {
-        columns = columnData.map(eachcolumn => {
-            const allTD = (eachcolumn.map(column => {
+    const getElmentByType = (column) => {
+        switch (column.inputType) {
+            case 'input':
+            case 'currency':
+            default:
                 return (
-                    <td key={column.name} >
-                        <Input
-                            key={column.key}
-                            name={column.name}
-                            elementType={column.inputType}
-                            value={column.value}
-                            options={column.options}
-                            changed={event => inputChangedHandler(event)} />
-                    </td>);
-            })
-            );
-            return (<tr key={eachcolumn[0].key}>
-                {allTD}
-                <td>
-                    <button className="imagebutton" id={eachcolumn[0].key}
-                        onClick={event => deleteButtonClickeHandler(event)}>
-                    <img id={eachcolumn[0].key} src={DeleteButtonImage} alt="Delete"></img>
-                    </button>
-                </td>
-            </tr>);
-        });
+                    <Input
+                        isValid     ={column.isValid} 
+                        key         ={column.key}
+                        name        ={column.name}
+                        inputType ={column.inputType}
+                        value       ={column.value}
+                        changed     ={e => inputChangedHandler(e)} />
+                );
+            case 'select':
+                return (
+                    <Select
+                        value       ={column.value}
+                        className   ="commonStyle"
+                        name        ={column.name}
+                        changed     ={e => inputChangedHandler(e)}
+                        options     ={column.options}
+                    />
+                )
+        }
     }
+
+    const rowContent = rowData.map(eachColumn => {
+        return (
+            <td key={eachColumn.name} >
+                {getElmentByType(eachColumn)}
+            </td>);
+    });
 
     return (
-        columns
-    )
+        <tr key={rowData[0].key}>
+            {rowContent}
+            <td>
+                <button
+                    className="imagebutton"
+                    id={rowData[0].key}
+                    onClick={event => deleteButtonClickeHandler(event)}>
+
+                    <img
+                        id={rowData[0].key}
+                        src={DeleteButtonImage}
+                        alt="Delete">
+                    </img>
+                </button>
+            </td>
+        </tr>
+    );
 }

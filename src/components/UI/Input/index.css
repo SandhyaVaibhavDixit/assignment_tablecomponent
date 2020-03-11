@@ -3,10 +3,14 @@
     border-right-style: hidden;
     border-left-style: hidden;
     border-bottom-style: groove;
-    background-color: #fff;
     outline: none;
 }
 
 .commonStyle:hover{
     background-color: #eee;
+}
+
+.Invalid {
+    border: 1px solid red;
+    background-color: #FDA49A;
 }
