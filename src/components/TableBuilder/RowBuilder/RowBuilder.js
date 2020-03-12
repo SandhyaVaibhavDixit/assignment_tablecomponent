@@ -26,6 +26,7 @@ export const RowBuilder = (props) => {
             default:
                 return (
                     <Input
+                        index       ={column.index}
                         isValid     ={column.isValid} 
                         name        ={column.name}
                         inputType   ={column.inputType}

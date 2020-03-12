@@ -7,7 +7,7 @@ export const Select = (props) => {
     const selectElement = (
         <select
             value       = {props.value}
-            className   = "commonStyle"
+            className   = 'commonStyle'
             key         = {props.name}
             name        = {props.name}
             onChange    = {props.changed}>

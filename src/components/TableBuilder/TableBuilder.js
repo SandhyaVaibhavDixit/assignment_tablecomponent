@@ -45,6 +45,7 @@ const TableBuilder = props => {
             columnCnt++;
             return {
                 ...column,
+                index: columnCnt,
                 isValid: true,
                 rowKey: "row" + row,
                 options: column.inputType === 'select' ? itemSelectOptions : '',
@@ -69,9 +70,10 @@ const TableBuilder = props => {
             columnCnt++;
             return {
                 ...column,
+                index: columnCnt,
                 isValid: true,
-                rowKey: "row" + rowNo,
-                name: "row" + rowNo + "Col" + columnCnt,
+                rowKey: 'row' + rowNo,
+                name: 'row' + rowNo + 'Col' + columnCnt,
                 value: column.inputType === 'select' ? 'Tape' : 0.00,
                 options: column.inputType === 'select' ? itemSelectOptions : ''
             }
