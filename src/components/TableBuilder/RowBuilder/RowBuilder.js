@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../../UI/Input';
 import { Select } from '../../UI/Select';
 
-import './RowBuilder.css';
+import './RowBuilder.scss';
 
 import DeleteIcon from '../../../assets/icons/delete.png';
 

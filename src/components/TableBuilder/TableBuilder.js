@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
-import { checkValidity } from '../../shared/utility';
+import { checkValidity } from '../../_shared/utility';
+import { tableStructure } from '../../_shared/tableStructure';
+import { selectOption } from '../../_shared/selectOption';
 
-import './TableBuilder.css';
+import './TableBuilder.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
 
 const TableBuilder = props => {
-    const itemSelectOptions = [
-        { value: 'tape', displayValue: 'Tape' },
-        { value: 'cd', displayValue: 'CD' },
-        { value: 'good-day', displayValue: 'Good Day' },
-        { value: 'burbone', displayValue: 'Burbone' },
-        { value: 'hide&seek', displayValue: 'Hide&Seek' },
-        { value: 'parle', displayValue: 'Parle' },
-    ];
     const initialData = [
         {
             materialFee: 10.00,
@@ -35,7 +29,8 @@ const TableBuilder = props => {
         },
     ];
 
-    const columns = props.tableStructure;
+    const itemSelectOptions = selectOption;
+    const columns = tableStructure;
     let row = 0;
 
     const initialState = initialData.map((eachData) => {
@@ -129,7 +124,7 @@ const TableBuilder = props => {
         setState(newState);
     }
 
-    const headerData = getTableHeader(props.tableStructure);
+    const headerData = getTableHeader(tableStructure);
 
     const tableHeaderRenderer = headerData.map(eachcolumn => {
         return (
