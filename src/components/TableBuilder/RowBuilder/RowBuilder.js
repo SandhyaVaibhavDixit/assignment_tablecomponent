@@ -1,24 +1,29 @@
 import React from 'react';
 import { Input } from '../../UI/Input';
 import { Select } from '../../UI/Select';
+import { tableStructure } from '../../../_shared/tableStructure';
+import { checkValidity } from '../../../_shared/utility';
+import { selectOption } from '../../../_shared/selectOption';
 
 import './RowBuilder.scss';
 
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { rowData, onChange, onDelete } = props;
+    const { id, rowData, onChange, onDelete } = props;
 
-    const getElmentByType = (column) => {
-        switch (column.inputType) {
+    const getElmentByType = (columnName, index, value, type) => {
+        switch (type) {
             case 'select':
                 return (
                     <Select
-                        value       ={column.value}
+                        value       ={value}
                         className   ="commonStyle"
-                        name        ={column.name}
-                        changed     ={e => onChange(e)}
-                        options     ={column.options}
+                        name        ={columnName}
+                        isValid     ={checkValidity(value, { required: true })}
+                        index       ={index}
+                        changed     ={e => onChange(e, id)}
+                        options     ={selectOption}
                     />
                 )
             case 'input':
@@ -26,34 +31,39 @@ export const RowBuilder = (props) => {
             default:
                 return (
                     <Input
-                        index       ={column.index}
-                        isValid     ={column.isValid} 
-                        name        ={column.name}
-                        inputType   ={column.inputType}
-                        value       ={column.value}
-                        onChanged   ={e => onChange(e)} />
+                        index       ={index}
+                        isValid     ={checkValidity(value, { required: true, isFloat: true })} 
+                        name        ={columnName}
+                        inputType   ={type}
+                        value       ={value}
+                        onChanged   ={e => onChange(e, id)} />
                 );
         }
     }
 
-    const rowContent = rowData.map(eachColumn => {
+    const rowContent =Object.keys(rowData).map((key, index) => {
+        const typeObject = tableStructure.filter(eachType => eachType.name === key);
+        const type = typeObject !== undefined ? typeObject[0].inputType : 'currency';
+ 
         return (
-            <td key={eachColumn.name} >
-                {getElmentByType(eachColumn)}
+            <td key={index} >
+                {
+                    getElmentByType(key, index, rowData[key], type)
+                }
             </td>);
     });
 
     return (
-        <tr key={rowData[0].rowKey}>
+        <tr key={id}>
             {rowContent}
             <td>
                 <button
+                    id={id}
                     className="imagebutton"
-                    id={rowData[0].rowKey}
                     onClick={event => onDelete(event)}>
 
                     <img
-                        id={rowData[0].rowKey}
+                        id={id}
                         src={DeleteIcon}
                         alt="Delete">
                     </img>

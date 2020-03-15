@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
-import { checkValidity } from '../../_shared/utility';
 import { tableStructure } from '../../_shared/tableStructure';
-import { selectOption } from '../../_shared/selectOption';
 
 import './TableBuilder.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
@@ -10,47 +8,28 @@ import AddButtonImage from '../../assets/icons/plus.png';
 const TableBuilder = props => {
     const initialData = [
         {
-            materialFee: 10.00,
             item: '',
+            materialFee: 10.00,
             packingFee: 2.00,
             unpackingFee: 3.00
         },
         {
-            materialFee: 2.00,
             item: '',
+            materialFee: 2.00,
             packingFee: 1.00,
             unpackingFee: 4.00
         },
         {
-            materialFee: 2.00,
             item: '',
+            materialFee: 2.00,
             packingFee: 1.00,
             unpackingFee: 5.00
         },
     ];
 
     const columns = tableStructure;
-    let row = 0;
 
-    const initialState = initialData.map((eachData) => {
-        row++;
-        let columnCnt = 0;
-        const dataStructure = columns.map((column) => {
-            columnCnt++;
-            return {
-                ...column,
-                index: columnCnt,
-                isValid: true,
-                rowKey: "row" + row,
-                options: column.inputType === 'select' ? selectOption : '',
-                name: "row" + row + "Col" + columnCnt,
-                value: column.inputType === 'select' ? '' : eachData[column.name]
-            }
-        });
-        return dataStructure;
-    });
-
-    const [state, setState] = useState(initialState);
+    const [state, setState] = useState(initialData);
 
     const getTableHeader = (tableStructure) => {
         const header = tableStructure.map(header => header.text);
@@ -58,68 +37,44 @@ const TableBuilder = props => {
     }
 
     const onAddItem = () => {
-        let rowNo = Math.floor(Math.random() * 100); //state.length;
-        let columnCnt = 0;
-        const emptyState = columns.map((column) => {
-            columnCnt++;
-            return {
-                ...column,
-                index: columnCnt,
-                isValid: true,
-                rowKey: 'row' + rowNo,
-                name: 'row' + rowNo + 'Col' + columnCnt,
-                value: column.inputType === 'select' ? '' : 0.00,
-                options: column.inputType === 'select' ? selectOption : ''
+        const emptyState = columns.reduce((object, column) => {
+            if(column.inputType === 'select'){
+                object[column.name] = '';
+            }else{
+                object[column.name] = 0;
             }
-        });
+            
+            return object;
+        }, {});
 
         setState(state.concat([emptyState]));
     }
 
-    const onChange = (e) => {
+    const onChange = index => e => {
         e.preventDefault();
-        let enteredValue = (e.target.type === 'text') ? 
-                                e.target.value.replace('$', '').trim() : 
-                                e.target.value;
+        let {name, value, type} = e.target;
 
-        const inputType = e.target.getAttribute('inputtype');
-        let isValid = true;
-
-        let value = enteredValue;
-
-        switch (inputType) {
-            case 'currency':
-                isValid = checkValidity(enteredValue, { required: true, isFloat: true });
-                value = enteredValue
-                break;
-            default:
-                isValid = checkValidity(enteredValue, { required: true });
-                break;
-        }
+        let enteredValue = (type === 'text') ? 
+                                value.replace('$', '').trim() : 
+                                value;
 
         //Copy state.
-        const previousState = [...state];
+        const currentState = [...state];
         
-        const newState = previousState.map(eachObject => {
-            return eachObject.map(eachData => (eachData.name === e.target.name ? { ...eachData, value, isValid } : eachData))
-        });
+        currentState[index]  ={...currentState[index], [name]: enteredValue };
 
         //Update state.
-        setState(newState);
+        setState(currentState);
     };
 
-    const onDelete = (e) => {
-
-        //Derive row to be deleted.
-        const rowKey = e.target.id;
-
+    const onDelete = index => e => {
         //Copy state.
-        const previousState = [...state];
+        const currentState = [...state];
 
-        const newState = previousState.filter(eachObject => (eachObject[0].rowKey !== rowKey));
+        currentState.splice(index, 1);
 
         //Update state.
-        setState(newState);
+        setState(currentState);
     }
 
     const headerData = getTableHeader(tableStructure);
@@ -130,12 +85,12 @@ const TableBuilder = props => {
                 <b>{eachcolumn}</b>
             </td>
         );
-    })
+    });
 
     const tableRowData = [...state];
-    const tableBodyRenderer = tableRowData.map(eachTableRow => {
+    const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
         return (
-            <RowBuilder key={eachTableRow[0].rowKey} rowData={eachTableRow} onChange={onChange} onDelete={onDelete} />
+            <RowBuilder id={index} key={index} rowData={eachTableRow} onChange={onChange(index)} onDelete={onDelete(index)} />
         )
     })
 
