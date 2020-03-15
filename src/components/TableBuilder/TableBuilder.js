@@ -29,7 +29,6 @@ const TableBuilder = props => {
         },
     ];
 
-    const itemSelectOptions = selectOption;
     const columns = tableStructure;
     let row = 0;
 
@@ -43,9 +42,9 @@ const TableBuilder = props => {
                 index: columnCnt,
                 isValid: true,
                 rowKey: "row" + row,
-                options: column.inputType === 'select' ? itemSelectOptions : '',
+                options: column.inputType === 'select' ? selectOption : '',
                 name: "row" + row + "Col" + columnCnt,
-                value: column.inputType === 'select' ? 'Tape' : eachData[column.name]
+                value: column.inputType === 'select' ? '' : eachData[column.name]
             }
         });
         return dataStructure;
@@ -69,8 +68,8 @@ const TableBuilder = props => {
                 isValid: true,
                 rowKey: 'row' + rowNo,
                 name: 'row' + rowNo + 'Col' + columnCnt,
-                value: column.inputType === 'select' ? 'Tape' : 0.00,
-                options: column.inputType === 'select' ? itemSelectOptions : ''
+                value: column.inputType === 'select' ? '' : 0.00,
+                options: column.inputType === 'select' ? selectOption : ''
             }
         });
 
@@ -78,6 +77,7 @@ const TableBuilder = props => {
     }
 
     const onChange = (e) => {
+        e.preventDefault();
         let enteredValue = (e.target.type === 'text') ? 
                                 e.target.value.replace('$', '').trim() : 
                                 e.target.value;
@@ -90,9 +90,7 @@ const TableBuilder = props => {
         switch (inputType) {
             case 'currency':
                 isValid = checkValidity(enteredValue, { required: true, isFloat: true });
-                value = (isValid === true) ?
-                            parseFloat(enteredValue).toFixed(2) :
-                            enteredValue;
+                value = enteredValue
                 break;
             default:
                 isValid = checkValidity(enteredValue, { required: true });

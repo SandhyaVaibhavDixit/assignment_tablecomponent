@@ -14,7 +14,7 @@ export const Select = (props) => {
 
             {props.options.map(option => (
                 <option key={option.value} value={option.value}>
-                    {option.displayValue}
+                    {option.text}
                 </option>
             ))}
             

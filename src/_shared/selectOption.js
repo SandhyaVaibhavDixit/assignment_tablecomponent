@@ -1,9 +1,10 @@
 export const selectOption = 
 [
-    { value: 'tape', displayValue: 'Tape' },
-    { value: 'cd', displayValue: 'CD' },
-    { value: 'good-day', displayValue: 'Good Day' },
-    { value: 'burbone', displayValue: 'Burbone' },
-    { value: 'hide&seek', displayValue: 'Hide&Seek' },
-    { value: 'parle', displayValue: 'Parle' },
+    { value: '', text: 'Select'},
+    { value: 'tape', text: 'Tape' },
+    { value: 'cd', text: 'CD' },
+    { value: 'good-day', text: 'Good Day' },
+    { value: 'burbone', text: 'Burbone' },
+    { value: 'hide&seek', text: 'Hide&Seek' },
+    { value: 'parle', text: 'Parle' },
 ];
