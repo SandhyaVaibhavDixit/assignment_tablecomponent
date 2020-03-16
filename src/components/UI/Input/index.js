@@ -7,7 +7,7 @@ export const Input = (props) => {
     const inputClasses = ['commonStyle'];
 
     if (!isValid) {
-        inputClasses.push('Invalid');
+        inputClasses.push('invalid');
     }
     const inputRef =  useRef(null);
 

@@ -8,7 +8,7 @@ export const Select = (props) => {
     const inputClasses = ['commonStyle'];
 
     if (!isValid) {
-        inputClasses.push('Invalid');
+        inputClasses.push('invalid');
     }
 
     const selectElement = (

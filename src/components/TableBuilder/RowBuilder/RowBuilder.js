@@ -3,14 +3,13 @@ import { Input } from '../../UI/Input';
 import { Select } from '../../UI/Select';
 import { tableStructure } from '../../../_shared/tableStructure';
 import { checkValidity } from '../../../_shared/utility';
-import { selectOption } from '../../../_shared/selectOption';
 
 import './RowBuilder.scss';
 
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { rowData, onChange, onDelete } = props;
+    const { rowData, options, onChange, onDelete } = props;
 
     const getElmentByType = (key, value, name, type) => {
         switch (type) {
@@ -19,8 +18,8 @@ export const RowBuilder = (props) => {
                     <Select
                         isValid     ={checkValidity(value, { required: true })}
                         value       ={value}
-                        onChange     ={e => onChange(key, name, e)}
-                        options     ={selectOption}
+                        onChange    ={e => onChange(key, name, e)}
+                        options     ={options}
                     />
                 )
             case 'input':

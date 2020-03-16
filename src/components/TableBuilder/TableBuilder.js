@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
 import { tableStructure } from '../../_shared/tableStructure';
+import { selectOption } from '../../_shared/selectOption';
 
 import './TableBuilder.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
 
-const TableBuilder = () => {
+export const TableBuilder = () => {
     const initialData = [
         {
             key: 1,
@@ -29,9 +30,6 @@ const TableBuilder = () => {
             unpackingFee: 5.00
         },
     ];
-
-    const columns = tableStructure;
-
     const [state, setState] = useState(initialData);
 
     const getTableHeader = (tableStructure) => {
@@ -39,12 +37,12 @@ const TableBuilder = () => {
         return header;
     }
 
-    function generatRandomKey(min, max) {
+    const generatKey = (min, max) => {
         return Math.random() * (max - min) + min;
-      }
+    }
 
     const onAddItem = () => {
-        const emptyState = columns.reduce((object, column) => {
+        const emptyState = tableStructure.reduce((object, column) => {
             if ( column.inputType === 'select' ) {
                 object[column.name] = '';
             }
@@ -56,7 +54,7 @@ const TableBuilder = () => {
         }, {});
 
         setState([
-            {...emptyState, key: generatRandomKey(1, 100) },
+            {...emptyState, key: generatKey(1, 100) },
             ...state
         ]);
         //setState(state.concat([emptyState]));
@@ -64,7 +62,7 @@ const TableBuilder = () => {
 
     const onChange = (key, name, e) => {
         // e.preventDefault();
-        let {value, type} = e.target;
+        const {value, type} = e.target;
 
         let enteredValue = (type === 'text') ? 
                                 value.replace('$', '').trim() : 
@@ -87,13 +85,8 @@ const TableBuilder = () => {
         //Copy state.
         const currentState = [...state];
 
-        //Find item to be deleted.
-        const updateItem = currentState.find(item => item.key === key);
-
-        currentState.splice(updateItem[key], 1);
-
-        //Update state.
-        setState(currentState);
+        //Remove by filter.
+        setState(currentState.filter(item => item.key !== key));
     }
 
     const headerData = getTableHeader(tableStructure);
@@ -109,7 +102,7 @@ const TableBuilder = () => {
     const tableRowData = [...state];
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
         return (
-            <RowBuilder key={eachTableRow.key} rowData={eachTableRow} onChange={onChange} onDelete={onDelete} />
+            <RowBuilder key={eachTableRow.key} rowData={eachTableRow} options={selectOption} onChange={onChange} onDelete={onDelete} />
         )
     })
 
@@ -133,4 +126,3 @@ const TableBuilder = () => {
     );
 };
 
-export default TableBuilder;
