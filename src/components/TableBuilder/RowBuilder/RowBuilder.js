@@ -10,19 +10,16 @@ import './RowBuilder.scss';
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { id, rowData, onChange, onDelete } = props;
+    const { rowData, onChange, onDelete } = props;
 
-    const getElmentByType = (columnName, index, value, type) => {
+    const getElmentByType = (key, value, name, type) => {
         switch (type) {
             case 'select':
                 return (
                     <Select
-                        value       ={value}
-                        className   ="commonStyle"
-                        name        ={columnName}
                         isValid     ={checkValidity(value, { required: true })}
-                        index       ={index}
-                        changed     ={e => onChange(e, id)}
+                        value       ={value}
+                        onChange     ={e => onChange(key, name, e)}
                         options     ={selectOption}
                     />
                 )
@@ -31,39 +28,39 @@ export const RowBuilder = (props) => {
             default:
                 return (
                     <Input
-                        index       ={index}
                         isValid     ={checkValidity(value, { required: true, isFloat: true })} 
-                        name        ={columnName}
                         inputType   ={type}
                         value       ={value}
-                        onChanged   ={e => onChange(e, id)} />
+                        onChange   ={e => onChange(key, name, e)} />
                 );
         }
     }
 
     const rowContent =Object.keys(rowData).map((key, index) => {
-        const typeObject = tableStructure.filter(eachType => eachType.name === key);
-        const type = typeObject !== undefined ? typeObject[0].inputType : 'currency';
- 
-        return (
-            <td key={index} >
-                {
-                    getElmentByType(key, index, rowData[key], type)
-                }
-            </td>);
+        let element = null;
+        if(key !== 'key'){
+            const typeObject = tableStructure.filter(eachType => eachType.name === key);
+            const type = typeObject !== undefined ? typeObject[0].inputType : 'currency';
+            element =
+            (
+                <td key={index} >
+                    {
+                        getElmentByType(rowData.key, rowData[key], key, type)
+                    }
+                </td>);
+        }
+        return element;
     });
 
     return (
-        <tr key={id}>
+        <tr key={rowData.key}>
             {rowContent}
             <td>
                 <button
-                    id={id}
                     className="imagebutton"
-                    onClick={event => onDelete(event)}>
+                    onClick={e => onDelete(e, rowData.key)}>
 
                     <img
-                        id={id}
                         src={DeleteIcon}
                         alt="Delete">
                     </img>

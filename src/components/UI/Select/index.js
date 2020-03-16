@@ -3,16 +3,21 @@ import React from 'react';
 import './index.scss'
 
 export const Select = (props) => {
+    const { isValid, value, onChange, options } = props;
+
+    const inputClasses = ['commonStyle'];
+
+    if (!isValid) {
+        inputClasses.push('Invalid');
+    }
 
     const selectElement = (
         <select
-            value       = {props.value}
-            className   = 'commonStyle'
-            key         = {props.name}
-            name        = {props.name}
-            onChange    = {props.changed}>
+            value       = {value}
+            className   = {inputClasses.join(' ')}
+            onChange    = {onChange}>
 
-            {props.options.map(option => (
+            {options.map(option => (
                 <option key={option.value} value={option.value}>
                     {option.text}
                 </option>

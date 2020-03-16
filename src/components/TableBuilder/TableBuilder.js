@@ -5,22 +5,25 @@ import { tableStructure } from '../../_shared/tableStructure';
 import './TableBuilder.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
 
-const TableBuilder = props => {
+const TableBuilder = () => {
     const initialData = [
         {
-            item: '',
+            key: 1,
+            item: 'tape',
             materialFee: 10.00,
             packingFee: 2.00,
             unpackingFee: 3.00
         },
         {
-            item: '',
+            key: 2,
+            item: 'tape',
             materialFee: 2.00,
             packingFee: 1.00,
             unpackingFee: 4.00
         },
         {
-            item: '',
+            key: 3,
+            item: 'cd',
             materialFee: 2.00,
             packingFee: 1.00,
             unpackingFee: 5.00
@@ -36,23 +39,32 @@ const TableBuilder = props => {
         return header;
     }
 
+    function generatRandomKey(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
     const onAddItem = () => {
         const emptyState = columns.reduce((object, column) => {
-            if(column.inputType === 'select'){
+            if ( column.inputType === 'select' ) {
                 object[column.name] = '';
-            }else{
+            }
+            else {
                 object[column.name] = 0;
             }
             
             return object;
         }, {});
 
-        setState(state.concat([emptyState]));
+        setState([
+            {...emptyState, key: generatRandomKey(1, 100) },
+            ...state
+        ]);
+        //setState(state.concat([emptyState]));
     }
 
-    const onChange = index => e => {
-        e.preventDefault();
-        let {name, value, type} = e.target;
+    const onChange = (key, name, e) => {
+        // e.preventDefault();
+        let {value, type} = e.target;
 
         let enteredValue = (type === 'text') ? 
                                 value.replace('$', '').trim() : 
@@ -61,17 +73,24 @@ const TableBuilder = props => {
         //Copy state.
         const currentState = [...state];
         
-        currentState[index]  ={...currentState[index], [name]: enteredValue };
+        let updateItem = currentState.find(item => item.key === key);
+
+        updateItem[name]= enteredValue;
+
+        //currentState = [...currentState, updateItem]; 
 
         //Update state.
-        setState(currentState);
+        setState([...currentState]);
     };
 
-    const onDelete = index => e => {
+    const onDelete = (e, key) => {
         //Copy state.
         const currentState = [...state];
 
-        currentState.splice(index, 1);
+        //Find item to be deleted.
+        const updateItem = currentState.find(item => item.key === key);
+
+        currentState.splice(updateItem[key], 1);
 
         //Update state.
         setState(currentState);
@@ -90,7 +109,7 @@ const TableBuilder = props => {
     const tableRowData = [...state];
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
         return (
-            <RowBuilder id={index} key={index} rowData={eachTableRow} onChange={onChange(index)} onDelete={onDelete(index)} />
+            <RowBuilder key={eachTableRow.key} rowData={eachTableRow} onChange={onChange} onDelete={onDelete} />
         )
     })
 

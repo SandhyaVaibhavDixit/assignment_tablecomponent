@@ -2,15 +2,17 @@ import React, { useRef, useEffect } from 'react';
 import './index.scss';
 
 export const Input = (props) => {
+    const { isValid, inputType, value, onChange } = props;
+
     const inputClasses = ['commonStyle'];
 
-    if (!props.isValid) {
+    if (!isValid) {
         inputClasses.push('Invalid');
     }
     const inputRef =  useRef(null);
 
     useEffect(() => {
-        if (props.index === 2) //to focus to first element of added row.
+        if (props.index === 1) //to focus to first element of added row.
         {
             if( inputRef.current !== null ){
                 inputRef.current.focus();
@@ -21,12 +23,10 @@ export const Input = (props) => {
 
     const inputElement = <input
                             ref         = {inputRef}
-                            key         = {props.name}
-                            name        = {props.name}
                             className   = {inputClasses.join(' ')}
-                            value       = {props.inputType === 'currency' ? `$ ${props.value}` : props.value}
-                            inputtype   = {props.inputType}
-                            onChange    = {props.onChanged} />;
+                            value       = {inputType === 'currency' ? `$ ${value}` : value}
+                            inputtype   = {inputType}
+                            onChange    = {onChange} />;
 
     return (
         inputElement
