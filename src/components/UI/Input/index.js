@@ -4,11 +4,14 @@ import './index.scss';
 export const Input = (props) => {
     const { isValid, inputType, value, onChange } = props;
 
-    const inputClasses = ['commonStyle'];
+    const inputClasses = ['input'];
+    const spanClasses = ['prefix'];
 
     if (!isValid) {
         inputClasses.push('invalid');
+        spanClasses.push('invalid');
     }
+
     const inputRef =  useRef(null);
 
     useEffect(() => {
@@ -21,13 +24,16 @@ export const Input = (props) => {
         }
     });
 
-    const inputElement = <input
+    const inputElement =<div>
+                        {(inputType === 'currency')? <span className={spanClasses.join(' ')}>$</span> : ''}
+                        <input
                             ref         = {inputRef}
                             className   = {inputClasses.join(' ')}
-                            value       = {inputType === 'currency' ? `$ ${value}` : value}
-                            inputtype   = {inputType}
-                            onChange    = {onChange} />;
-
+                            type        = 'text'
+                            value       = {value}
+                            onChange    = {onChange} />
+                    </div> 
+    
     return (
         inputElement
     );

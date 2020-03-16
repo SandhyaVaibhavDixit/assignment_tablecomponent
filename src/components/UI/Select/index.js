@@ -5,16 +5,16 @@ import './index.scss'
 export const Select = (props) => {
     const { isValid, value, onChange, options } = props;
 
-    const inputClasses = ['commonStyle'];
+    const selectClasses = ['select'];
 
     if (!isValid) {
-        inputClasses.push('invalid');
+        selectClasses.push('invalid');
     }
 
     const selectElement = (
         <select
             value       = {value}
-            className   = {inputClasses.join(' ')}
+            className   = {selectClasses.join(' ')}
             onChange    = {onChange}>
 
             {options.map(option => (

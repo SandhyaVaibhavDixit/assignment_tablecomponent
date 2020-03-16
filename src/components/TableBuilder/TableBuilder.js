@@ -62,20 +62,23 @@ export const TableBuilder = () => {
 
     const onChange = (key, name, e) => {
         // e.preventDefault();
-        const {value, type} = e.target;
-
-        let enteredValue = (type === 'text') ? 
-                                value.replace('$', '').trim() : 
-                                value;
+        const {value} = e.target;
 
         //Copy state.
         const currentState = [...state];
         
         let updateItem = currentState.find(item => item.key === key);
 
-        updateItem[name]= enteredValue;
+        // const selectedItem = currentState.reduce((object, eachItem) => {
+        //     if(eachItem.key === key){
+        //         object = eachItem;    
+        //     }
+        //     return object;
+        // },{});
 
-        //currentState = [...currentState, updateItem]; 
+        // selectedItem[name] = value;
+
+        updateItem[name]= value;
 
         //Update state.
         setState([...currentState]);

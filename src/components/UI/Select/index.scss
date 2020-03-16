@@ -1,5 +1,17 @@
+.select {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom: 2px solid grey;
+    outline: none;
+}
+
+.select:hover{
+    background-color: #eee;
+}
+
 
 .invalid {
-    border: 1px solid red;
-    background-color: #FDA49A;
+    border-bottom: 2px solid red;
+    // background-color: #FDA49A;
 }
