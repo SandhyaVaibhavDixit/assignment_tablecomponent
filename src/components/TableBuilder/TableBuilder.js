@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
 import { tableStructure } from '../../_shared/tableStructure';
 import { selectOption } from '../../_shared/selectOption';
-
 import './TableBuilder.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
 
@@ -31,6 +30,7 @@ export const TableBuilder = () => {
         },
     ];
     const [state, setState] = useState(initialData);
+    const [newRowKey, setNewRowKey] = useState(null);
 
     const getTableHeader = (tableStructure) => {
         const header = tableStructure.map(header => header.text);
@@ -53,10 +53,13 @@ export const TableBuilder = () => {
             return object;
         }, {});
 
+        const key = generatKey(1, 100);
         setState([
-            {...emptyState, key: generatKey(1, 100) },
+            {key: key , ...emptyState},
             ...state
         ]);
+
+        setNewRowKey(key);
         //setState(state.concat([emptyState]));
     }
 
@@ -82,6 +85,7 @@ export const TableBuilder = () => {
 
         //Update state.
         setState([...currentState]);
+        setNewRowKey(null);
     };
 
     const onDelete = (e, key) => {
@@ -90,6 +94,7 @@ export const TableBuilder = () => {
 
         //Remove by filter.
         setState(currentState.filter(item => item.key !== key));
+        setNewRowKey(null);
     }
 
     const headerData = getTableHeader(tableStructure);
@@ -105,7 +110,7 @@ export const TableBuilder = () => {
     const tableRowData = [...state];
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
         return (
-            <RowBuilder key={eachTableRow.key} rowData={eachTableRow} options={selectOption} onChange={onChange} onDelete={onDelete} />
+            <RowBuilder newRowKey={newRowKey} key={eachTableRow.key} rowData={eachTableRow} options={selectOption} onChange={onChange} onDelete={onDelete} />
         )
     })
 

@@ -9,9 +9,9 @@ import './RowBuilder.scss';
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { rowData, options, onChange, onDelete } = props;
+    const { newRowKey, rowData, options, onChange, onDelete } = props;
 
-    const getElmentByType = (key, value, name, type) => {
+    const getElmentByType = (key, value, name, type, columnIndex) => {
         switch (type) {
             case 'select':
                 return (
@@ -27,10 +27,13 @@ export const RowBuilder = (props) => {
             default:
                 return (
                     <Input
-                        isValid     ={checkValidity(value, { required: true, isFloat: true })} 
-                        inputType   ={type}
-                        value       ={value}
-                        onChange   ={e => onChange(key, name, e)} />
+                        currentRowKey   ={key}
+                        newRowKey       ={newRowKey}
+                        columnIndex     ={columnIndex}
+                        isValid         ={checkValidity(value, { required: true, isFloat: true })} 
+                        inputType       ={type}
+                        value           ={value}
+                        onChange        ={e => onChange(key, name, e)} />
                 );
         }
     }
@@ -44,7 +47,7 @@ export const RowBuilder = (props) => {
             (
                 <td key={index} >
                     {
-                        getElmentByType(rowData.key, rowData[key], key, type)
+                        getElmentByType(rowData.key, rowData[key], key, type, index, newRowKey)
                     }
                 </td>);
         }
@@ -68,3 +71,4 @@ export const RowBuilder = (props) => {
         </tr>
     );
 }
+    

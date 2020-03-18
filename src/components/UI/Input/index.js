@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './index.scss';
 
 export const Input = (props) => {
-    const { isValid, inputType, value, onChange } = props;
+    const { currentRowKey, newRowKey, columnIndex, isValid, inputType, value, onChange } = props;
 
     const inputClasses = ['input'];
     const spanClasses = ['prefix'];
@@ -15,7 +15,7 @@ export const Input = (props) => {
     const inputRef =  useRef(null);
 
     useEffect(() => {
-        if (props.index === 1) //to focus to first element of added row.
+        if ((newRowKey !== null) && (currentRowKey === newRowKey) && (columnIndex === 2)) //to focus to first element of added row.
         {
             if( inputRef.current !== null ){
                 inputRef.current.focus();
