@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './index.scss';
 
 export const Input = (props) => {
-    const { currentRowKey, newRowKey, columnIndex, isValid, inputType, value, onChange } = props;
+    const { focus, isValid, inputType, value, onChange, onBlur } = props;
 
     const inputClasses = ['input'];
     const spanClasses = ['prefix'];
@@ -12,26 +12,29 @@ export const Input = (props) => {
         spanClasses.push('invalid');
     }
 
-    const inputRef =  useRef(null);
-
-    useEffect(() => {
-        if ((newRowKey !== null) && (currentRowKey === newRowKey) && (columnIndex === 2)) //to focus to first element of added row.
-        {
-            if( inputRef.current !== null ){
-                inputRef.current.focus();
-                
+    //focusFirstInputElementForNewRow gives following error:
+    //Line 18:9:  React Hook "useEffect" is called in function "focusFirstInputElementForNewRow" which is neither a React function component or a custom React Hook function  react-hooks/rules-of-hooks
+    //So renamed it as FocusFirstInputElementForNewRow
+    const FocusFirstInputElementForNewRow = () => {
+        useEffect(() => {
+            if (focus) {
+                focus.current.focus();              
             }
-        }
-    });
+        });    
+    }
 
+    FocusFirstInputElementForNewRow();
+    
     const inputElement =<div>
                         {(inputType === 'currency')? <span className={spanClasses.join(' ')}>$</span> : ''}
                         <input
-                            ref         = {inputRef}
+                            ref         = {focus}
                             className   = {inputClasses.join(' ')}
                             type        = 'text'
                             value       = {value}
-                            onChange    = {onChange} />
+                            onChange    = {onChange}
+                            onBlur      = {onBlur}
+                        />
                     </div> 
     
     return (

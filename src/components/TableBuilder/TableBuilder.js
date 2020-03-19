@@ -30,7 +30,6 @@ export const TableBuilder = () => {
         },
     ];
     const [state, setState] = useState(initialData);
-    const [newRowKey, setNewRowKey] = useState(null);
 
     const getTableHeader = (tableStructure) => {
         const header = tableStructure.map(header => header.text);
@@ -55,16 +54,15 @@ export const TableBuilder = () => {
 
         const key = generatKey(1, 100);
         setState([
-            {key: key , ...emptyState},
-            ...state
+            {
+                key: key,
+                isNew: true, 
+                ...emptyState},
+                ...state
         ]);
-
-        setNewRowKey(key);
-        //setState(state.concat([emptyState]));
     }
 
     const onChange = (key, name, e) => {
-        // e.preventDefault();
         const {value} = e.target;
 
         //Copy state.
@@ -72,21 +70,18 @@ export const TableBuilder = () => {
         
         let updateItem = currentState.find(item => item.key === key);
 
-        // const selectedItem = currentState.reduce((object, eachItem) => {
-        //     if(eachItem.key === key){
-        //         object = eachItem;    
-        //     }
-        //     return object;
-        // },{});
-
-        // selectedItem[name] = value;
-
         updateItem[name]= value;
 
         //Update state.
         setState([...currentState]);
-        setNewRowKey(null);
     };
+
+    const onBlur = (data) => {
+        const updatedData = [...state];
+        let updateItem = updatedData.find(item => item.key === data.key);
+        delete updateItem.isNew;
+        setState([...updatedData]);
+    }
 
     const onDelete = (e, key) => {
         //Copy state.
@@ -94,7 +89,6 @@ export const TableBuilder = () => {
 
         //Remove by filter.
         setState(currentState.filter(item => item.key !== key));
-        setNewRowKey(null);
     }
 
     const headerData = getTableHeader(tableStructure);
@@ -110,7 +104,14 @@ export const TableBuilder = () => {
     const tableRowData = [...state];
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
         return (
-            <RowBuilder newRowKey={newRowKey} key={eachTableRow.key} rowData={eachTableRow} options={selectOption} onChange={onChange} onDelete={onDelete} />
+            <RowBuilder 
+                key     ={eachTableRow.key} 
+                rowData ={eachTableRow} 
+                options ={selectOption} 
+                onChange={onChange} 
+                onDelete={onDelete} 
+                onBlur  ={onBlur}
+            />
         )
     })
 

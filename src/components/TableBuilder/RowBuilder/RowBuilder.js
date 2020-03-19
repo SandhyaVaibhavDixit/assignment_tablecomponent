@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Input } from '../../UI/Input';
 import { Select } from '../../UI/Select';
 import { tableStructure } from '../../../_shared/tableStructure';
@@ -9,10 +9,13 @@ import './RowBuilder.scss';
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { newRowKey, rowData, options, onChange, onDelete } = props;
+    const { rowData, options, onChange, onBlur, onDelete } = props;
+    const inputRef =  useRef();
 
-    const getElmentByType = (key, value, name, type, columnIndex) => {
-        switch (type) {
+    const getElmentByType = (rowData, name, inputType, index) => {
+        const { key, isNew } = rowData;
+        const value          = rowData[name];
+        switch (inputType) {
             case 'select':
                 return (
                     <Select
@@ -25,32 +28,36 @@ export const RowBuilder = (props) => {
             case 'input':
             case 'currency':
             default:
+                const isNewElementRef = (Boolean(isNew) && index === 3);
+                const focusRef        = isNewElementRef ? inputRef : null;  
                 return (
                     <Input
-                        currentRowKey   ={key}
-                        newRowKey       ={newRowKey}
-                        columnIndex     ={columnIndex}
+                        focus           ={focusRef}
+                        name            ={name}
                         isValid         ={checkValidity(value, { required: true, isFloat: true })} 
-                        inputType       ={type}
+                        inputType       ={inputType}
                         value           ={value}
-                        onChange        ={e => onChange(key, name, e)} />
+                        onChange        ={e => onChange(key, name, e)} 
+                        onBlur          ={() => onBlur(rowData)}
+                    />
                 );
-        }
+           }
     }
 
     const rowContent =Object.keys(rowData).map((key, index) => {
+        if (key === 'key' || key === 'isNew') return false;
+
         let element = null;
-        if(key !== 'key'){
-            const typeObject = tableStructure.filter(eachType => eachType.name === key);
-            const type = typeObject !== undefined ? typeObject[0].inputType : 'currency';
-            element =
-            (
-                <td key={index} >
-                    {
-                        getElmentByType(rowData.key, rowData[key], key, type, index, newRowKey)
-                    }
-                </td>);
-        }
+        const findInputType = tableStructure.find(eachInputType => eachInputType.name === key);
+        const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';              
+        element =
+        (
+            <td key={index} >
+                {
+                    getElmentByType(rowData, key, inputType, index)
+                }
+            </td>
+        );
         return element;
     });
 

@@ -19,6 +19,9 @@
 
 .Table tr:hover{
     background-color:  #eee;
+    .input, .select{
+        background-color: #eee;
+    }
 }
 
 .Table tr td:first-child {
