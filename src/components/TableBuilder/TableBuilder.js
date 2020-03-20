@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { RowBuilder } from './RowBuilder/RowBuilder';
 import { tableStructure } from '../../_shared/tableStructure';
 import { selectOption } from '../../_shared/selectOption';
@@ -30,7 +30,7 @@ export const TableBuilder = () => {
         },
     ];
     const [state, setState] = useState(initialData);
-
+      
     const getTableHeader = (tableStructure) => {
         const header = tableStructure.map(header => header.text);
         return header;
@@ -40,26 +40,45 @@ export const TableBuilder = () => {
         return Math.random() * (max - min) + min;
     }
 
-    const onAddItem = () => {
-        const emptyState = tableStructure.reduce((object, column) => {
-            if ( column.inputType === 'select' ) {
-                object[column.name] = '';
-            }
-            else {
-                object[column.name] = 0;
-            }
-            
-            return object;
-        }, {});
+    const FocusEmptyRowElement = (emptyRowRef) => {
+        emptyRowRef.current.scrollIntoView({block: 'end', behavior: 'smooth'});
+    }
 
-        const key = generatKey(1, 100);
-        setState([
-            {
-                key: key,
-                isNew: true, 
-                ...emptyState},
-                ...state
-        ]);
+    const onAddItem = (emptyRowRef) => {
+        const perviousState = [...state];
+        let hasEmptyRowExist = false;
+        perviousState.every(eachRow => {
+            hasEmptyRowExist = checkIfRowIsEmpty(eachRow);    
+            if(hasEmptyRowExist === true){
+                return false;
+            }    
+            return hasEmptyRowExist;
+        });
+
+        if(hasEmptyRowExist === true){
+            FocusEmptyRowElement(emptyRowRef);
+        }
+        else {
+            const emptyState = tableStructure.reduce((object, column) => {
+                if ( column.inputType === 'select' ) {
+                    object[column.name] = '';
+                }
+                else {
+                    object[column.name] = 0;
+                }
+                
+                return object;
+            }, {});
+
+            const key = generatKey(1, 100);
+            setState([
+                {
+                    key: key,
+                    isNew: true, 
+                    ...emptyState},
+                    ...state
+            ]);
+        }
     }
 
     const onChange = (key, name, e) => {
@@ -102,18 +121,45 @@ export const TableBuilder = () => {
     });
 
     const tableRowData = [...state];
+    const emptyRef = useRef();
+
+    const checkIfRowIsEmpty = (data) => {
+        let isRowEmpty = true;
+       
+        Object.keys(data).forEach(key => {
+            if (key === 'key' || key === 'isNew')  return;
+            if(data[key] === null || data[key] === 0 || data[key] === '' ) {
+                isRowEmpty = isRowEmpty && true ;
+            } 
+            else {
+                isRowEmpty = isRowEmpty && false;
+            }
+        });
+
+        return isRowEmpty;
+    }
+
+    let emptyRowRef;
+    let rowRefForButton = null;
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
+        emptyRowRef = checkIfRowIsEmpty(eachTableRow) === true ? emptyRef : null;
+
+        if(emptyRowRef !== null){
+            rowRefForButton = emptyRowRef;
+        }
+
         return (
             <RowBuilder 
-                key     ={eachTableRow.key} 
-                rowData ={eachTableRow} 
-                options ={selectOption} 
-                onChange={onChange} 
-                onDelete={onDelete} 
-                onBlur  ={onBlur}
+                key             ={eachTableRow.key} 
+                rowData         ={eachTableRow} 
+                options         ={selectOption} 
+                onChange        ={onChange} 
+                onDelete        ={onDelete} 
+                onBlur          ={onBlur}
+                emptyRowRef     ={emptyRowRef}
             />
         )
-    })
+    });
 
     return (
         <div>
@@ -127,7 +173,7 @@ export const TableBuilder = () => {
                     {tableBodyRenderer}
                 </tbody>
             </table>
-            <button className="imagebutton" onClick={onAddItem}>
+            <button className="imagebutton" onClick={e => onAddItem(rowRefForButton)}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>

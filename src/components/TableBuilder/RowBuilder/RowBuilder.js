@@ -9,7 +9,7 @@ import './RowBuilder.scss';
 import DeleteIcon from '../../../assets/icons/delete.png';
 
 export const RowBuilder = (props) => {
-    const { rowData, options, onChange, onBlur, onDelete } = props;
+    const { rowData, options, onChange, onBlur, onDelete, emptyRowRef } = props;
     const inputRef =  useRef();
 
     const getElmentByType = (rowData, name, inputType, index) => {
@@ -44,7 +44,7 @@ export const RowBuilder = (props) => {
            }
     }
 
-    const rowContent =Object.keys(rowData).map((key, index) => {
+    const rowContent = Object.keys(rowData).map((key, index) => {
         if (key === 'key' || key === 'isNew') return false;
 
         let element = null;
@@ -61,8 +61,9 @@ export const RowBuilder = (props) => {
         return element;
     });
 
+
     return (
-        <tr key={rowData.key}>
+        <tr ref={emptyRowRef} key={rowData.key}>
             {rowContent}
             <td>
                 <button
