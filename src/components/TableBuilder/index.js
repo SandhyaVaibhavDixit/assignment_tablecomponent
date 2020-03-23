@@ -9,34 +9,24 @@ import AddButtonImage from '../../assets/icons/plus.png';
 export const TableBuilder = () => {
     const [state, setState] = useState(initialData);
       
-    const getTableHeader = () => {
-        const header = tableStructure.map(header => header.text);
-        return header;
-    }
+    const getTableHeader = () =>
+        tableStructure.map(header => header.text);
 
-    const generatKey = (min, max) => {
-        return Math.random() * (max - min) + min;
-    }
+    const generatKey = (min, max) => 
+        Math.random() * (max - min) + min;
 
-    const focusEmptyRowElement = (emptyRowRef) => {
+    const getEmptyRow = (rowData) => 
+        rowData.find(eachRow => tableStructure.every(({ name }) => !eachRow[name]));
+
+    const scrollToEmptyRow = (emptyRowRef) => 
         emptyRowRef.current.scrollIntoView({block: 'end', behavior: 'smooth'});
-    }
-
+    
     //Add new row to table.
     const onAddItem = (emptyRowRef) => {
-        const perviousState = [...state];
-        let isEmptyRowExist = false;
-        
-        perviousState.every(eachRow => {
-            isEmptyRowExist = checkIfRowIsEmpty(eachRow);    
-            if(isEmptyRowExist === true){
-                return false;
-            }    
-            return isEmptyRowExist;
-        });
+       const row = getEmptyRow(state);
 
-        if(isEmptyRowExist === true){
-            focusEmptyRowElement(emptyRowRef);
+       if(Boolean(row)){
+            scrollToEmptyRow(emptyRowRef);
         }
         else {
             const emptyState = tableStructure.reduce((object, column) => {
@@ -58,7 +48,8 @@ export const TableBuilder = () => {
                 {
                     key: key,
                     isNew: true, 
-                    ...emptyState},
+                    ...emptyState
+                },
                     ...state
             ]);
         }
@@ -88,7 +79,7 @@ export const TableBuilder = () => {
     }
 
     //Delete row.
-    const onDelete = (e, key) => {
+    const onDelete = (key) => {
         //Copy state.
         const currentState = [...state];
 
@@ -110,28 +101,19 @@ export const TableBuilder = () => {
     const tableRowData = [...state];
     const emptyRef = useRef();
 
-    const checkIfRowIsEmpty = (data) => {
-        let isRowEmpty = true;
-       
-        Object.keys(data).forEach(key => {
-            if (key === 'key' || key === 'isNew')  return;
-            if(data[key] === null || data[key] === 0 || data[key] === '' ) {
-                isRowEmpty = isRowEmpty && true ;
-            } 
-            else {
-                isRowEmpty = isRowEmpty && false;
-            }
-        });
-
-        return isRowEmpty;
-    }
-
     //Create table body.
-    let emptyRowRef;
     let emptyRowForAddButton = null;
 
+    const emptyRow = getEmptyRow(tableRowData);
+
     const tableBodyRenderer = tableRowData.map((eachTableRow, index) => {
-        emptyRowRef = checkIfRowIsEmpty(eachTableRow) === true ? emptyRef : null;
+    
+        const isEmptyRowPresent = Boolean(emptyRow) ?
+                                    Object.entries(emptyRow).toString() === Object.entries(eachTableRow).toString() :
+                                    false;
+                
+        const emptyRowRef = isEmptyRowPresent === true ? emptyRef : null;
+
 
         if(emptyRowRef !== null){
             emptyRowForAddButton = emptyRowRef;
@@ -162,7 +144,7 @@ export const TableBuilder = () => {
                     {tableBodyRenderer}
                 </tbody>
             </table>
-            <button className="imagebutton" onClick={e => onAddItem(emptyRowForAddButton)}>
+            <button className="imagebutton" onClick={ ()=> onAddItem(emptyRowForAddButton)}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>

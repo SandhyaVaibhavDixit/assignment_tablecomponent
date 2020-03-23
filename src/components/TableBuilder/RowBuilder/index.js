@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Input } from '../../UI/Input';
 import { Select } from '../../UI/Select';
-import { CheckValidity } from '../../UI/Utility/utility';
+import { CheckValidity } from '../../UI/CheckValidity';
 
 import { tableStructure } from '../../../_shared/tableStructure';
 import DeleteIcon from '../../../assets/icons/delete.png';
@@ -10,6 +10,7 @@ import './index.scss';
 
 export const RowBuilder = (props) => {
     const { rowData, options, onChange, onBlur, onDelete, emptyRowRef } = props;
+    
     const inputRef =  useRef();
     let inputElementCount = 0;
 
@@ -49,10 +50,10 @@ export const RowBuilder = (props) => {
     const rowContent = Object.keys(rowData).map((key, index) => {
         if (key === 'key' || key === 'isNew') return false;
 
-        let element = null;
         const findInputType = tableStructure.find(eachInputType => eachInputType.name === key);
         const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';              
-        element =
+        
+        const element =
                 (
                     <td key={index} >
                         {
@@ -70,10 +71,10 @@ export const RowBuilder = (props) => {
             <td>
                 <button
                     className="imagebutton"
-                    onClick={e => onDelete(e, rowData.key)}>
+                    onClick={() => onDelete(rowData.key)}>
                     <img
-                        src={DeleteIcon}
-                        alt="Delete">
+                         src ={DeleteIcon}
+                        alt ="Delete">
                     </img>
                 </button>
             </td>
