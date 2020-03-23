@@ -4,6 +4,11 @@ export const tableStructure = [
       name: 'item',
       inputType: 'select'
     },
+    // {
+    //   text:'Product Name',
+    //   name: 'productName',
+    //   inputType: 'input'
+    // },  
     {
       text:'Material Fee',
       name: 'materialFee',

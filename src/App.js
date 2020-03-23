@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableBuilder } from './components/TableBuilder/TableBuilder';
+import { TableBuilder } from './components/TableBuilder';
 
 import './App.scss';
 
