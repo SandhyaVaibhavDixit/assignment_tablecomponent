@@ -13,7 +13,7 @@ export const RowBuilder = (props) => {
 
     const inputRef =  useRef();
     
-    const getElementByType = (rowData, name, inputType) => {
+    const getColumnByType = (rowData, name, inputType) => {
         const { key, isNew } = rowData;
         const value          = rowData[name];
         switch (inputType) {
@@ -58,22 +58,24 @@ export const RowBuilder = (props) => {
         )
     }
 
+    const renderColumn = (index, rowData, key, inputType) => {
+        return(
+                <td key={index} >
+                    {
+                        getColumnByType(rowData, key, inputType)
+                    }
+                </td>
+            );
+    }
+    
     const renderTableRow = () => {
         return Object.keys(rowData).map((key, index) => {
             if (key === 'key' || key === 'isNew') return false;
 
             const findInputType = tableStructure.find(eachInputType => eachInputType.name === key);
-            const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';              
+            const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';
             
-            const element =
-                    (
-                        <td key={index} >
-                            {
-                                getElementByType(rowData, key, inputType)
-                            }
-                        </td>
-                    );
-            return element;
+            return renderColumn(index, rowData, key, inputType);
         });
     }
 
