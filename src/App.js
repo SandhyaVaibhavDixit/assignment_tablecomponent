@@ -1,4 +1,5 @@
 import React from 'react';
+import { tableStructure } from './_shared/tableStructure';
 import { TableBuilder } from './components/TableBuilder';
 
 import './App.scss';
@@ -6,7 +7,7 @@ import './App.scss';
 function App() {
   return (
     <div className="App">
-      <TableBuilder />
+      <TableBuilder tableStructure ={tableStructure}/>
     </div>
   );
 }
