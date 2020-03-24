@@ -13,43 +13,64 @@ export const RowBuilder = (props) => {
 
     const inputRef =  useRef();
     
-    const getColumnByType = (rowData, name, inputType) => {
-        const { key, isNew } = rowData;
-        const value          = rowData[name];
+    const renderTableRow = () => {
+        const {key, isNew} = rowData;
+
+        return Object.keys(rowData).map((columnName, index) => {
+            if (columnName === 'key' || columnName === 'isNew') return false;
+
+            const findInputType = tableStructure.find(eachInputType => eachInputType.name === columnName);
+            const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';
+
+            return renderColumn(rowData[columnName], columnName, inputType, key, isNew, index);
+        });
+    }
+
+    const renderColumn = (value, columnName, inputType, rowKey, isNewRow, index) => {
+        return(
+                <td key={index}>
+                    {
+                       getColumnByType(value, columnName, inputType, rowKey, isNewRow)
+                    }
+                </td>
+            );
+    }
+
+    const getColumnByType = (value, columnName, inputType, rowKey, isNew) => {
         switch (inputType) {
             case 'select':
                 return (
                         <Select
                             isValid     ={CheckValidity(value, { required: true })}
                             value       ={value}
-                            onChange    ={e => onChange(key, name, e)}
+                            onChange    ={e => onChange(rowKey, columnName, e)}
                             options     ={options}
                         />
                     )
             case 'input':
             case 'currency':
             default:
-                const isNewElementRef = (Boolean(isNew) && (firstInputElement.name === name) );
+                const isNewElementRef = (Boolean(isNew) && (firstInputElement.columnName === columnName) );
                 const focusRef        = isNewElementRef ? inputRef : null;  
                 return (
                         <Input
                             focus           ={focusRef}
-                            name            ={name}
+                            name            ={columnName}
                             isValid         ={CheckValidity(value, { required: true, isFloat: true })} 
                             inputType       ={inputType}
                             value           ={value}
-                            onChange        ={e => onChange(key, name, e)} 
+                            onChange        ={e => onChange(rowKey, columnName, e)} 
                             onBlur          ={() => onBlur(rowData)}
                         />
                     );
             }
     }
 
-    const renderDeleteAction = () =>{
+    const renderDeleteAction = (rowKey) =>{
         return(
             <button
                 className="imagebutton"
-                onClick={() => onDelete(rowData.key)}>
+                onClick={() => onDelete(rowKey)}>
                 <img
                     src ={DeleteIcon}
                     alt ="Delete">
@@ -58,32 +79,11 @@ export const RowBuilder = (props) => {
         )
     }
 
-    const renderColumn = (index, rowData, key, inputType) => {
-        return(
-                <td key={index} >
-                    {
-                        getColumnByType(rowData, key, inputType)
-                    }
-                </td>
-            );
-    }
-    
-    const renderTableRow = () => {
-        return Object.keys(rowData).map((key, index) => {
-            if (key === 'key' || key === 'isNew') return false;
-
-            const findInputType = tableStructure.find(eachInputType => eachInputType.name === key);
-            const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';
-            
-            return renderColumn(index, rowData, key, inputType);
-        });
-    }
-
     return (
         <tr ref={emptyRowRef} key={rowData.key}>
-            {renderTableRow()}
+                {renderTableRow()}
             <td>
-                {renderDeleteAction()}
+                {renderDeleteAction(rowData.key)}
             </td>
         </tr>
     );

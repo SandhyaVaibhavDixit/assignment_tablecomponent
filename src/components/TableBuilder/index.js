@@ -1,28 +1,31 @@
 import React, { useState, useRef } from 'react';
-import { RowBuilder } from './RowBuilder';
 import { initialData } from '../../_shared/data';
 import { selectOption } from '../../_shared/selectOption';
+import { getEmptyRow } from '../../_util/getEmptyRow';
+import { generateKey } from '../../_util/generateKey';
+import { RowBuilder } from './RowBuilder';
+
 import './index.scss';
 import AddButtonImage from '../../assets/icons/plus.png';
 
-export const TableBuilder = (props) => {
+export const TableBuilder = ( props ) => {
     const { tableStructure } = props;
     const [state, setState] = useState(initialData);
     const emptyRef = useRef();
-      
+    
+    const tableRowData = [...state];
+
+    const emptyRow = getEmptyRow(tableRowData, tableStructure);
+
+    const getDidEmptyRowMatch = (row) => Boolean(emptyRow) ? emptyRow.key === row.key : false;
+    
     const getTableHeader = () => tableStructure.map(header => header.text);
-
-    const generatKey = (min, max) => Math.random() * (max - min) + min;
-
-    const getEmptyRow = (rowData) => rowData.find(eachRow => tableStructure.every(({ name }) => !eachRow[name]));
 
     const scrollToEmptyRow = (emptyRowRef) => emptyRowRef.current.scrollIntoView({block: 'end', behavior: 'smooth'});
     
     //Add new row to table.
     const onAddItem = () => {
-       const row = getEmptyRow(state);
-
-       if(Boolean(row)){
+       if(Boolean(emptyRow)){
             scrollToEmptyRow(emptyRef);
         }
         else {
@@ -40,7 +43,7 @@ export const TableBuilder = (props) => {
                 return object;
             }, {});
 
-            const key = generatKey(1, 100);
+            const key = generateKey(1, 100);
             setState([
                 {
                     key: key,
@@ -54,34 +57,36 @@ export const TableBuilder = (props) => {
 
     //Input and select on change handler. 
     const onChange = (key, name, e) => {
-        const {value} = e.target;
+        const { value } = e.target;
 
         //Copy state.
-        const currentState = [...state];
+        const previousState = [...state];
         
-        let updateItem = currentState.find(item => item.key === key);
+        let updateItem = previousState.find(item => item.key === key);
 
         updateItem[name]= value;
 
         //Update state.
-        setState([...currentState]);
+        setState([...previousState]);
     };
 
     //If new row midified then remove the isNew attribute.
     const onBlur = (data) => {
         const updatedData = [...state];
+
         let updateItem = updatedData.find(item => item.key === data.key);
         delete updateItem.isNew;
+        
         setState([...updatedData]);
     }
 
     //Delete row.
     const onDelete = (key) => {
         //Copy state.
-        const currentState = [...state];
+        const previousState = [...state];
 
         //Remove by filter.
-        setState(currentState.filter(item => item.key !== key));
+        setState(previousState.filter(item => item.key !== key));
     }
 
     //Create table header.
@@ -98,13 +103,9 @@ export const TableBuilder = (props) => {
     }
 
     //Create table body.
-    const tableRowData = [...state];
-    const emptyRow = getEmptyRow(tableRowData);
-
     const renderTableBody = () => {
         return tableRowData.map((eachTableRow, index) => {   
-            const isEmptyRowPresent = Boolean(emptyRow) ? emptyRow.key === eachTableRow.key : false;
-            const emptyRowRef = isEmptyRowPresent === true ? emptyRef : null;
+            const emptyRowRef = getDidEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             return (
                 <RowBuilder 
@@ -123,12 +124,13 @@ export const TableBuilder = (props) => {
 
     const renderAddAction = () =>{
         return(
-            <button className="imagebutton" onClick={ ()=> onAddItem()}>
+            <button className="imagebutton" onClick={ () => onAddItem()}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>
         );
     }
+
     return (
         <div>
             <table className="Table">
