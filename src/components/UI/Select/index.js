@@ -16,12 +16,14 @@ export const Select = (props) => {
             className   = {selectClasses.join(' ')}
             onChange    = {onChange}>
 
-            {options.map(option => (
-                <option key={option.value} value={option.value}>
-                    {option.text}
+            { options.map(option => (
+                <option 
+                    key     ={option.value} 
+                    value   ={option.value}>
+
+                        {option.text}
                 </option>
             ))}
-            
         </select>
     );
 

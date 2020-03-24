@@ -8,13 +8,21 @@ import DeleteIcon from '../../../assets/icons/delete.png';
 
 import './index.scss';
 
+const inputTypes = ['input', 'currency'];
+
+const extractNames = (acc, inputLine) => {
+    if(inputTypes.includes(inputLine[1].inputType))
+        return acc.concat(inputLine[1].name);
+    else
+        return acc;
+}
+const inputElementArray = Object.entries(tableStructure).reduce(extractNames, []);
+
 export const RowBuilder = (props) => {
     const { rowData, options, onChange, onBlur, onDelete, emptyRowRef } = props;
-    
+        
     const inputRef =  useRef();
-    let inputElementCount = 0;
-
-    const getElementByType = (rowData, name, inputType, index) => {
+    const getElementByType = (rowData, name, inputType) => {
         const { key, isNew } = rowData;
         const value          = rowData[name];
         switch (inputType) {
@@ -30,8 +38,8 @@ export const RowBuilder = (props) => {
             case 'input':
             case 'currency':
             default:
-                inputElementCount++;
-                const isNewElementRef = (Boolean(isNew) && (inputElementCount === 1));
+                const indexOfElement = inputElementArray.indexOf(name); 
+                const isNewElementRef = (Boolean(isNew) && (indexOfElement === 0));
                 const focusRef        = isNewElementRef ? inputRef : null;  
                 return (
                     <Input
@@ -57,7 +65,7 @@ export const RowBuilder = (props) => {
                 (
                     <td key={index} >
                         {
-                            getElementByType(rowData, key, inputType, index)
+                            getElementByType(rowData, key, inputType)
                         }
                     </td>
                 );
