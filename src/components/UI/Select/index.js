@@ -8,21 +8,19 @@ export const Select = (props) => {
     if (!isValid) {
         selectClasses.push('invalid');
     }
-
+    const optionElement = options.map(option => (
+                                <option 
+                                    key   ={option.value} 
+                                    value ={option.value}>
+                                        {option.text}
+                                </option>
+                            ));
     const selectElement = (
         <select
             value     ={value}
             className ={selectClasses.join(' ')}
             onChange  ={onChange}>
-
-            { options.map(option => (
-                <option 
-                    key   ={option.value} 
-                    value ={option.value}>
-
-                        {option.text}
-                </option>
-            ))}
+            { optionElement }
         </select>
     );
 
