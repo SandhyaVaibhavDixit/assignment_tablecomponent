@@ -17,7 +17,7 @@ export const TableBuilder = ( props ) => {
 
     const emptyRow = getEmptyRow(tableRowData, tableStructure);
 
-    const getDidEmptyRowMatch = (row) => Boolean(emptyRow) ? emptyRow.key === row.key : false;
+    const hasEmptyRowMatch = (row) => Boolean(emptyRow) ? emptyRow.key === row.key : false;
     
     const getTableHeader = () => tableStructure.map(header => header.text);
 
@@ -25,7 +25,7 @@ export const TableBuilder = ( props ) => {
     
     //Add new row to table.
     const onAddItem = () => {
-       if(Boolean(emptyRow)){
+       if (Boolean(emptyRow)){
             scrollToEmptyRow(emptyRef);
         }
         else {
@@ -105,26 +105,27 @@ export const TableBuilder = ( props ) => {
     //Create table body.
     const renderTableBody = () => {
         return tableRowData.map((eachTableRow, index) => {   
-            const emptyRowRef = getDidEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
+            const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             return (
                 <RowBuilder 
-                    tableStructure  ={tableStructure}
-                    key             ={eachTableRow.key} 
-                    rowData         ={eachTableRow} 
-                    options         ={selectOption} 
-                    onChange        ={onChange} 
-                    onDelete        ={onDelete} 
-                    onBlur          ={onBlur}
-                    emptyRowRef     ={emptyRowRef}
+                    tableStructure ={tableStructure}
+                    key            ={eachTableRow.key} 
+                    rowData        ={eachTableRow} 
+                    options        ={selectOption} 
+                    onChange       ={onChange} 
+                    onDelete       ={onDelete} 
+                    onBlur         ={onBlur}
+                    emptyRowRef    ={emptyRowRef}
                 />
             )
         });
     }
 
-    const renderAddAction = () =>{
+    const onClick = () => onAddItem();
+    const renderAddAction = () => {
         return(
-            <button className="imagebutton" onClick={ () => onAddItem()}>
+            <button className="imagebutton" onClick={onClick}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>

@@ -24,16 +24,16 @@ export const Input = (props) => {
     }
 
     FocusFirstInputElementForNewRow();
-    
+    const span = (inputType === 'currency') ? <span className={spanClasses.join(' ')}>$</span> : '';
     const inputElement = <div>
-                         {(inputType === 'currency')? <span className={spanClasses.join(' ')}>$</span> : ''}
+                         {span}
                          <input
-                            ref         = {focus}
-                            className   = {inputClasses.join(' ')}
-                            type        = 'text'
-                            value       = {value}
-                            onChange    = {onChange}
-                            onBlur      = {onBlur}
+                            ref       ={focus}
+                            className ={inputClasses.join(' ')}
+                            type      ='text'
+                            value     ={value}
+                            onChange  ={onChange}
+                            onBlur    ={onBlur}
                          />
                     </div> 
     

@@ -37,30 +37,34 @@ export const RowBuilder = (props) => {
     }
 
     const getColumnByType = (value, columnName, inputType, rowKey, isNew) => {
+        const onElementChange = (e) => onChange(rowKey, columnName, e);
         switch (inputType) {
             case 'select':
+                const isSelectValueValid =CheckValidity(value, { required: true });
                 return (
                         <Select
-                            isValid     ={CheckValidity(value, { required: true })}
-                            value       ={value}
-                            onChange    ={e => onChange(rowKey, columnName, e)}
-                            options     ={options}
+                            isValid  ={isSelectValueValid}
+                            value    ={value}
+                            onChange ={onElementChange}
+                            options  ={options}
                         />
                     )
             case 'input':
             case 'currency':
             default:
-                const isNewElementRef = (Boolean(isNew) && (firstInputElement.columnName === columnName) );
-                const focusRef        = isNewElementRef ? inputRef : null;  
+                const isNewElementRef   =(Boolean(isNew) && (firstInputElement.columnName === columnName) );
+                const focusRef          =isNewElementRef ? inputRef : null;
+                const isInputValueValid =CheckValidity(value, { required: true, isFloat: true })
+                const onInputBlur       = () => onBlur(rowData);
                 return (
                         <Input
-                            focus           ={focusRef}
-                            name            ={columnName}
-                            isValid         ={CheckValidity(value, { required: true, isFloat: true })} 
-                            inputType       ={inputType}
-                            value           ={value}
-                            onChange        ={e => onChange(rowKey, columnName, e)} 
-                            onBlur          ={() => onBlur(rowData)}
+                            focus     ={focusRef}
+                            name      ={columnName}
+                            isValid   ={isInputValueValid} 
+                            inputType ={inputType}
+                            value     ={value}
+                            onChange  ={onElementChange} 
+                            onBlur    ={onInputBlur}
                         />
                     );
             }
