@@ -19,8 +19,8 @@ export const RowBuilder = (props) => {
         return Object.keys(rowData).map((columnName, index) => {
             if (columnName === 'key' || columnName === 'isNew') return false;
 
-            const findInputType = tableStructure.find(eachInputType => eachInputType.name === columnName);
-            const inputType = Boolean(findInputType) ? findInputType.inputType : 'currency';
+            const getInputType = tableStructure.find(eachInputType => eachInputType.name === columnName);
+            const inputType = Boolean(getInputType) ? getInputType.inputType : 'currency';
 
             return renderColumn(rowData[columnName], columnName, inputType, key, isNew, index);
         });
