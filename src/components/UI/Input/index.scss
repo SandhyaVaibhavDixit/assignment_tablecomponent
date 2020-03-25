@@ -1,0 +1,24 @@
+.input {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom: 2px solid grey;
+    outline: none;
+}
+
+.prefix{
+    text-decoration: none;
+    color: black;
+    font-size: small;
+    border-bottom: 2px solid grey;
+    padding: 1px 0px;
+}
+
+.input:hover{
+    background-color: #eee;
+}
+
+.invalid {
+    border-bottom: 2px solid red;
+    // background-color: #FDA49A;
+}
