@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './index.scss';
 
 export const Input = (props) => {
-    const { focus, name, isValid, inputType, value, onChange, onBlur } = props;
+    const { focusRef, name, isValid, inputType, value, onChange, onBlur } = props;
 
     const inputClasses = ['input'];
     const spanClasses = ['prefix'];
@@ -17,8 +17,8 @@ export const Input = (props) => {
     //So renamed it as FocusFirstInputElementForNewRow
     const FocusFirstInputElementForNewRow = () => {
         useEffect(() => {
-            if (focus) {
-                focus.current.focus();              
+            if (focusRef) {
+                focusRef.current.focus();              
             }
         });    
     }
@@ -28,7 +28,7 @@ export const Input = (props) => {
     const inputElement = <div>
                          {span}
                          <input
-                            ref       ={focus}
+                            ref       ={focusRef}
                             name      ={name}
                             className ={inputClasses.join(' ')}
                             type      ='text'

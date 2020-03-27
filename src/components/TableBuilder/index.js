@@ -106,15 +106,19 @@ export const TableBuilder = ( props ) => {
         return state.map((eachTableRow, index) => {   
             const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
+            const onInputChange = (e) => onChange(eachTableRow.key, e);
+            const onInputBlur   = () => onBlur(eachTableRow);
+            const onRowDelete   = () => onDelete(eachTableRow.key);
+
             return (
                 <RowBuilder 
                     tableStructure ={tableStructure}
                     key            ={eachTableRow.key} 
                     rowData        ={eachTableRow} 
                     options        ={selectOption} 
-                    onChange       ={onChange} 
-                    onDelete       ={onDelete} 
-                    onBlur         ={onBlur}
+                    onChange       ={onInputChange} 
+                    onDelete       ={onRowDelete} 
+                    onBlur         ={onInputBlur}
                     emptyRowRef    ={emptyRowRef}
                 />
             )

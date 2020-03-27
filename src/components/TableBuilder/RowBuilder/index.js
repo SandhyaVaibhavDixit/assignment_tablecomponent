@@ -21,8 +21,7 @@ export const RowBuilder = (props) => {
                 value       :rowData[columnName],
                 columnName  :columnName,
                 inputType   :eachColumn.inputType,
-                key         :rowData.key,
-                isNew       :Boolean(rowData.isNew) ? rowData.isNew : null,
+                isNew       :emptyRowRef === null ? false : true,
                 index       :index
             };
 
@@ -41,9 +40,8 @@ export const RowBuilder = (props) => {
     }
 
     const getColumnByType = (data) => {
-        const {value, columnName, inputType, key, isNew} = data;
+        const {value, columnName, inputType, isNew} = data;
 
-        const onElementChange = (e) => onChange(key, e);
         switch (inputType) {
             case 'select':
                 const isSelectValueValid = CheckValidity(value, { required: true });
@@ -52,26 +50,25 @@ export const RowBuilder = (props) => {
                             isValid    ={isSelectValueValid}
                             name       ={columnName}
                             value      ={value}
-                            onChange   ={onElementChange}
+                            onChange   ={onChange}
                             options    ={options}
                         />
                     )
             case 'input':
             case 'currency':
             default:
-                const isNewElementRef   =(Boolean(isNew) && (firstInputElement.name === columnName) );
+                const isNewElementRef   =(isNew && (firstInputElement.name === columnName) );
                 const focusRef          =isNewElementRef ? inputRef : null;
                 const isInputValueValid =CheckValidity(value, { required: true, isFloat: true })
-                const onInputBlur       = () => onBlur(rowData);
                 return (
                         <Input
-                            focus     ={focusRef}
+                            focusRef  ={focusRef}
                             name      ={columnName}
                             isValid   ={isInputValueValid} 
                             inputType ={inputType}
                             value     ={value}
-                            onChange  ={onElementChange} 
-                            onBlur    ={onInputBlur}
+                            onChange  ={onChange} 
+                            onBlur    ={onBlur}
                         />
                     );
             }
@@ -81,7 +78,8 @@ export const RowBuilder = (props) => {
         return(
             <button
                 className="imagebutton"
-                onClick={() => onDelete(rowKey)}>
+                onClick={onDelete}
+                >
                 <img
                     src ={DeleteIcon}
                     alt ="Delete">
