@@ -6,10 +6,10 @@ export const Input = (props) => {
 
     const inputClasses = ['input'];
     const spanClasses = ['prefix'];
+    const divClasses = ['div'];;
 
     if (!isValid) {
-        inputClasses.push('invalid');
-        spanClasses.push('invalid');
+        divClasses.push('invalid');
     }
 
     //focusFirstInputElementForNewRow gives following error:
@@ -24,8 +24,9 @@ export const Input = (props) => {
     }
 
     FocusFirstInputElementForNewRow();
+    
     const span = (inputType === 'currency') ? <span className={spanClasses.join(' ')}>$</span> : '';
-    const inputElement = <div>
+    const inputElement = <div className ={divClasses.join(' ')}>
                          {span}
                          <input
                             ref       ={focusRef}

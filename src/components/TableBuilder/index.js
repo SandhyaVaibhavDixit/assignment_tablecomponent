@@ -68,20 +68,6 @@ export const TableBuilder = ( props ) => {
         setState(updatedState);
     };
 
-    //If new row midified then remove the isNew attribute.
-    const onBlur = (data) => {
-        const { key } = data;
-
-        const updatedState = state.map(row => {
-            if ( row.key === key ) { 
-                delete row.isNew
-            }
-            return row;
-        });
-        
-        setState(updatedState);
-    }
-
     //Delete row.
     const onDelete = (key) => {
         //Remove by filter.
@@ -89,9 +75,9 @@ export const TableBuilder = ( props ) => {
     }
 
     //Create table header.
-    const renderTableHeader = () =>{
-        const headerNames = getTableHeader();
-    
+    const renderTableHeader = () => {
+        const headerNames = [...getTableHeader(), ''];
+        
         return headerNames.map(headerName => {
             return (
                 <td key={headerName}>
@@ -107,7 +93,6 @@ export const TableBuilder = ( props ) => {
             const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             const onInputChange = (e) => onChange(eachTableRow.key, e);
-            const onInputBlur   = () => onBlur(eachTableRow);
             const onRowDelete   = () => onDelete(eachTableRow.key);
 
             return (
@@ -118,7 +103,6 @@ export const TableBuilder = ( props ) => {
                     options        ={selectOption} 
                     onChange       ={onInputChange} 
                     onDelete       ={onRowDelete} 
-                    onBlur         ={onInputBlur}
                     emptyRowRef    ={emptyRowRef}
                 />
             )

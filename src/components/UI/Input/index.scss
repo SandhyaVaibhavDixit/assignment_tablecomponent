@@ -1,8 +1,15 @@
-.input {
-    border-top-style: hidden;
-    border-right-style: hidden;
-    border-left-style: hidden;
+.div {
+    margin-left: 2px;
+    border-bottom: 1px solid #eee;    
+}
+
+.div:hover{
     border-bottom: 2px solid grey;
+    background-color: #eee;
+}
+
+.input {
+    border-style: hidden;
     outline: none;
 }
 
@@ -10,8 +17,11 @@
     text-decoration: none;
     color: black;
     font-size: small;
-    border-bottom: 2px solid grey;
     padding: 1px 0px;
+}
+
+.prefix:hover{
+    background-color: #eee;
 }
 
 .input:hover{
@@ -20,5 +30,4 @@
 
 .invalid {
     border-bottom: 2px solid red;
-    // background-color: #FDA49A;
 }

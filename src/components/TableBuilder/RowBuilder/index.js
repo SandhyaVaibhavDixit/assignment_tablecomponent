@@ -8,7 +8,7 @@ import DeleteIcon from '../../../assets/icons/delete.png';
 import './index.scss';
 
 export const RowBuilder = (props) => {
-    const { tableStructure, rowData, options, onChange, onBlur, onDelete, emptyRowRef } = props;
+    const { tableStructure, rowData, options, onChange, onDelete, emptyRowRef } = props;
     const firstInputElement = findInputElement(tableStructure);
 
     const inputRef =  useRef();
@@ -68,7 +68,6 @@ export const RowBuilder = (props) => {
                             inputType ={inputType}
                             value     ={value}
                             onChange  ={onChange} 
-                            onBlur    ={onBlur}
                         />
                     );
             }

@@ -1,47 +1,45 @@
 .Table {
     width: 100%;
     padding: 50px;
-    border: 0px none;
     border-spacing: 0 15px;
-    outline: none;
     text-align: left !important;
 }
 
 .Table tr {
-    outline: none;
     background-color: #fff;
+    border: 2x solid #eee;
 }
 
-.Table td  th{
+.Table tbody tr td {
+    padding-left: 5px;
+    padding-right: 5px;
     text-align: left !important;
-    outline: none;
+    border-top: 2px solid #eee;
+    border-bottom: 2px solid #eee;
 }
 
-.Table tr:hover{
+.Table tr:hover {
     background-color:  #eee;
     .input, .select{
         background-color: #eee;
     }
 }
 
-.Table tr td:first-child {
+.Table tbody tr td:first-child {
     padding-left: 10px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-bottomleft: 5px;
-    border-top-left-radius:5px;
-    border-bottom-left-radius:5px;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-bottom-left-radius: 5px;
-
+    border-top: 2px solid #eee;
+    border-bottom: 2px solid #eee;
+    border-left: 2px solid #eee;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
-.Table tr td:last-child {
-    -moz-border-radius-topright: 5px;
-    -moz-border-radius-bottomright: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
+.Table tbody tr td:last-child {
+    border-top: 2px solid #eee;
+    border-bottom: 2px solid #eee;
+    border-right: 2px solid #eee;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .imagebutton {
