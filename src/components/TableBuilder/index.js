@@ -13,9 +13,7 @@ export const TableBuilder = ( props ) => {
     const [state, setState] = useState(initialData);
     const emptyRef = useRef();
     
-    const tableRowData = [...state];
-
-    const emptyRow = getEmptyRow(tableRowData, tableStructure);
+    const emptyRow = getEmptyRow(state, tableStructure);
 
     const hasEmptyRowMatch = (row) => Boolean(emptyRow) ? emptyRow.key === row.key : false;
     
@@ -56,47 +54,48 @@ export const TableBuilder = ( props ) => {
     }
 
     //Input and select on change handler. 
-    const onChange = (key, name, e) => {
-        const { value } = e.target;
+    const onChange = (key,  e) => {
+        const { name, value } = e.target;
 
-        //Copy state.
-        const previousState = [...state];
-        
-        let updateItem = previousState.find(item => item.key === key);
-
-        updateItem[name]= value;
+        const updatedState = state.map(row => {
+            if ( row.key === key ) { 
+                row[name] = value
+            }
+            return row;
+        });
 
         //Update state.
-        setState([...previousState]);
+        setState(updatedState);
     };
 
     //If new row midified then remove the isNew attribute.
     const onBlur = (data) => {
-        const updatedData = [...state];
+        const { key } = data;
 
-        let updateItem = updatedData.find(item => item.key === data.key);
-        delete updateItem.isNew;
+        const updatedState = state.map(row => {
+            if ( row.key === key ) { 
+                delete row.isNew
+            }
+            return row;
+        });
         
-        setState([...updatedData]);
+        setState(updatedState);
     }
 
     //Delete row.
     const onDelete = (key) => {
-        //Copy state.
-        const previousState = [...state];
-
         //Remove by filter.
-        setState(previousState.filter(item => item.key !== key));
+        setState(state.filter(item => item.key !== key));
     }
 
     //Create table header.
     const renderTableHeader = () =>{
-        const headerData = getTableHeader();
+        const headerNames = getTableHeader();
     
-        return headerData.map(eachcolumn => {
+        return headerNames.map(headerName => {
             return (
-                <td key={eachcolumn}>
-                    <b>{eachcolumn}</b>
+                <td key={headerName}>
+                    <b>{headerName}</b>
                 </td>
             );
         });
@@ -104,7 +103,7 @@ export const TableBuilder = ( props ) => {
 
     //Create table body.
     const renderTableBody = () => {
-        return tableRowData.map((eachTableRow, index) => {   
+        return state.map((eachTableRow, index) => {   
             const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             return (
@@ -122,10 +121,9 @@ export const TableBuilder = ( props ) => {
         });
     }
 
-    const onClick = () => onAddItem();
     const renderAddAction = () => {
         return(
-            <button className="imagebutton" onClick={onClick}>
+            <button className="imagebutton" onClick={ () => onAddItem()}>
                 <img src={AddButtonImage} alt="Add"></img>
                 <span>Add Item</span>
             </button>

@@ -14,45 +14,52 @@ export const RowBuilder = (props) => {
     const inputRef =  useRef();
     
     const renderTableRow = () => {
-        const {key, isNew} = rowData;
+        return tableStructure.map((eachColumn, index) => {
+            const columnName = eachColumn.name;
+        
+            const data = {
+                value       :rowData[columnName],
+                columnName  :columnName,
+                inputType   :eachColumn.inputType,
+                key         :rowData.key,
+                isNew       :Boolean(rowData.isNew) ? rowData.isNew : null,
+                index       :index
+            };
 
-        return Object.keys(rowData).map((columnName, index) => {
-            if (columnName === 'key' || columnName === 'isNew') return false;
-
-            const getInputType = tableStructure.find(eachInputType => eachInputType.name === columnName);
-            const inputType = Boolean(getInputType) ? getInputType.inputType : 'currency';
-
-            return renderColumn(rowData[columnName], columnName, inputType, key, isNew, index);
-        });
+            return renderColumn(data);
+        })
     }
 
-    const renderColumn = (value, columnName, inputType, rowKey, isNewRow, index) => {
+    const renderColumn = (data) => {
         return(
-                <td key={index}>
+                <td key={data.index}>
                     {
-                       getColumnByType(value, columnName, inputType, rowKey, isNewRow)
+                       getColumnByType(data)
                     }
                 </td>
             );
     }
 
-    const getColumnByType = (value, columnName, inputType, rowKey, isNew) => {
-        const onElementChange = (e) => onChange(rowKey, columnName, e);
+    const getColumnByType = (data) => {
+        const {value, columnName, inputType, key, isNew} = data;
+
+        const onElementChange = (e) => onChange(key, e);
         switch (inputType) {
             case 'select':
-                const isSelectValueValid =CheckValidity(value, { required: true });
+                const isSelectValueValid = CheckValidity(value, { required: true });
                 return (
                         <Select
-                            isValid  ={isSelectValueValid}
-                            value    ={value}
-                            onChange ={onElementChange}
-                            options  ={options}
+                            isValid    ={isSelectValueValid}
+                            name       ={columnName}
+                            value      ={value}
+                            onChange   ={onElementChange}
+                            options    ={options}
                         />
                     )
             case 'input':
             case 'currency':
             default:
-                const isNewElementRef   =(Boolean(isNew) && (firstInputElement.columnName === columnName) );
+                const isNewElementRef   =(Boolean(isNew) && (firstInputElement.name === columnName) );
                 const focusRef          =isNewElementRef ? inputRef : null;
                 const isInputValueValid =CheckValidity(value, { required: true, isFloat: true })
                 const onInputBlur       = () => onBlur(rowData);
@@ -68,7 +75,7 @@ export const RowBuilder = (props) => {
                         />
                     );
             }
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
     const renderDeleteAction = (rowKey) =>{
         return(
@@ -92,4 +99,3 @@ export const RowBuilder = (props) => {
         </tr>
     );
 }
-    

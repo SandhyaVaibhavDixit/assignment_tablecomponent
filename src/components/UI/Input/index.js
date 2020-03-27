@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './index.scss';
 
 export const Input = (props) => {
-    const { focus, isValid, inputType, value, onChange, onBlur } = props;
+    const { focus, name, isValid, inputType, value, onChange, onBlur } = props;
 
     const inputClasses = ['input'];
     const spanClasses = ['prefix'];
@@ -29,6 +29,7 @@ export const Input = (props) => {
                          {span}
                          <input
                             ref       ={focus}
+                            name      ={name}
                             className ={inputClasses.join(' ')}
                             type      ='text'
                             value     ={value}

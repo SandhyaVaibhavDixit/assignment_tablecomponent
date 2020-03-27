@@ -2,7 +2,7 @@ import React from 'react';
 import './index.scss'
 
 export const Select = (props) => {
-    const { isValid, value, onChange, options } = props;
+    const { isValid, name, value, onChange, options } = props;
     const selectClasses = ['select'];
 
     if (!isValid) {
@@ -18,6 +18,7 @@ export const Select = (props) => {
     const selectElement = (
         <select
             value     ={value}
+            name      ={name}
             className ={selectClasses.join(' ')}
             onChange  ={onChange}>
             { optionElement }
