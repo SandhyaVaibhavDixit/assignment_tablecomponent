@@ -2,9 +2,15 @@
     width: 90%;
     padding: 50px;
 
+    .tableDiv {
+        padding-bottom: 10px;
+    }
+
     .addDiv {
-        padding-top: 100px;
+        width: 100%;
         float: left;
+        border-top: 1px solid #eee ;
+        border-bottom: 1px solid #eee;
     }
 }
 
@@ -39,7 +45,7 @@
     }
     
     tbody tr td:first-child {
-        padding-left: 10px;
+        padding-left: 5px;
         border-top: 2px solid #eee;
         border-bottom: 2px solid #eee;
         border-left: 2px solid #eee;
@@ -57,14 +63,18 @@
 }
 
 .imagebutton {
+    float: left;
     border: 0;
     background: transparent;
     text-align: center;
     padding: 1px 6px 1px 6px;
 
-    &:hover{
+    &:hover {
         cursor: pointer;  
       }
+    &:focus {
+        outline: none;
+    }
 }
 
 .imagebutton > img,

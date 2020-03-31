@@ -137,16 +137,18 @@ export const TableBuilder = ( props ) => {
 
     return (
         <div className="mainDiv">
-            <table className="Table">
-                <thead>
-                    <tr>
-                        {renderTableHeader()}
-                    </tr>
-                </thead>
-                <tbody>
-                    {renderTableBody()}
-                </tbody>
-            </table>
+            <div className="tableDiv">
+                <table className="Table">
+                    <thead>
+                        <tr>
+                            {renderTableHeader()}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {renderTableBody()}
+                    </tbody>
+                </table>
+            </div>
             <div className="addDiv">
                 {renderAddAction()}
             </div>
