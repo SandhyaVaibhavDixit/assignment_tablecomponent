@@ -6,7 +6,7 @@ import { generateKey } from '../../_util/generateKey';
 import { RowBuilder } from './RowBuilder';
 
 import './index.scss';
-import AddButtonImage from '../../assets/icons/plus.png';
+import AddButtonImage from '../../assets/icons/add.png';
 
 export const TableBuilder = ( props ) => {
     const { tableStructure } = props;
@@ -68,6 +68,20 @@ export const TableBuilder = ( props ) => {
         setState(updatedState);
     };
 
+    const onSelectChange = (key, name, value) => {
+
+        console.log(key + ' : ' + name +' : ' + value );
+        const updatedState = state.map(row => {
+            if ( row.key === key ) { 
+                row[name] = value
+            }
+            return row;
+        });
+
+        //Update state.
+        setState(updatedState);
+    }
+
     //Delete row.
     const onDelete = (key) => {
         //Remove by filter.
@@ -81,7 +95,7 @@ export const TableBuilder = ( props ) => {
         return headerNames.map(headerName => {
             return (
                 <td key={headerName}>
-                    <b>{headerName}</b>
+                    {headerName}
                 </td>
             );
         });
@@ -93,15 +107,18 @@ export const TableBuilder = ( props ) => {
             const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             const onInputChange = (e) => onChange(eachTableRow.key, e);
+           // const onSelectChange = () => onSelectChange(eachTableRow.key);
             const onRowDelete   = () => onDelete(eachTableRow.key);
 
             return (
                 <RowBuilder 
                     tableStructure ={tableStructure}
-                    key            ={eachTableRow.key} 
+                    rowKey         ={eachTableRow.key}
+                    key            ={index} 
                     rowData        ={eachTableRow} 
                     options        ={selectOption} 
                     onChange       ={onInputChange} 
+                    onSelectChange ={onSelectChange}
                     onDelete       ={onRowDelete} 
                     emptyRowRef    ={emptyRowRef}
                 />
@@ -119,7 +136,7 @@ export const TableBuilder = ( props ) => {
     }
 
     return (
-        <div>
+        <div className="mainDiv">
             <table className="Table">
                 <thead>
                     <tr>
@@ -130,7 +147,9 @@ export const TableBuilder = ( props ) => {
                     {renderTableBody()}
                 </tbody>
             </table>
-            {renderAddAction()}
+            <div className="addDiv">
+                {renderAddAction()}
+            </div>
         </div>
     );
 };

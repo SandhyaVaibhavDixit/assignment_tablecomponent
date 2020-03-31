@@ -1,31 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './index.scss'
+import UpIcon from '../../../assets/icons/up.png';
+import DownIcon from '../../../assets/icons/down.png';
 
 export const Select = (props) => {
-    const { isValid, name, value, onChange, options } = props;
-    const selectClasses = ['select'];
+    const { isValid, rowKey, name, value, onChange, options } = props;
+  
+    const [isDropDown, setIsDropDown] = useState(false);
+    let dropDownClass = ['noContent'];
+    let arrow = <img src={DownIcon} className='arrow' alt='Select'></img> ;
+    
+    const dropDownItems = options.map((option, index) => {
+        return (<li 
+                    value={option.value} 
+                    key={index}
+                    onClick={()=>selectHandler(option.value)}> 
+                    {option.text}
+                </li>
+        );
+    });
 
-    if (!isValid) {
-        selectClasses.push('invalid');
+    const selectHandler = (value) =>{
+        if(isDropDown) {
+            setIsDropDown(false);
+            onChange(rowKey, name, value);
+        }
     }
-    const optionElement = options.map(option => (
-                                <option 
-                                    key   ={option.value} 
-                                    value ={option.value}>
-                                        {option.text}
-                                </option>
-                            ));
-    const selectElement = (
-        <select
-            value     ={value}
-            name      ={name}
-            className ={selectClasses.join(' ')}
-            onChange  ={onChange}>
-            { optionElement }
-        </select>
-    );
 
-    return (
-        selectElement
-    );
+    const showContent = () =>{
+        setIsDropDown(!isDropDown);
+    }
+
+    if (isDropDown){
+        dropDownClass= ['dropContent'];
+        arrow = <img src={UpIcon} alt='Select'></img> ;
+    }
+    else {
+        dropDownClass = ['noContent'];
+    }
+    
+    let divClass = ['dropdown']
+    if (!isValid) {
+        divClass.push('invalid');
+    }
+    
+    return(
+        <div className={divClass.join(' ')}>
+            <button 
+                className='button'
+                onClick={() => showContent()}>
+                {value === '' ? 'Select an item' : value}
+                <span className='arrow'>{arrow}</span>
+            </button>
+            <div>
+                <ul className={dropDownClass.join(' ')}>
+                    {dropDownItems}
+                </ul>
+            </div>
+        </div>
+    )
 };

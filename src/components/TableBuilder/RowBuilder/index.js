@@ -8,7 +8,7 @@ import DeleteIcon from '../../../assets/icons/delete.png';
 import './index.scss';
 
 export const RowBuilder = (props) => {
-    const { tableStructure, rowData, options, onChange, onDelete, emptyRowRef } = props;
+    const { tableStructure, rowKey, rowData, options, onChange, onSelectChange, onDelete, emptyRowRef } = props;
     const firstInputElement = findInputElement(tableStructure);
 
     const inputRef =  useRef();
@@ -48,9 +48,10 @@ export const RowBuilder = (props) => {
                 return (
                         <Select
                             isValid    ={isSelectValueValid}
+                            rowKey     ={rowKey}
                             name       ={columnName}
                             value      ={value}
-                            onChange   ={onChange}
+                            onChange   ={onSelectChange}
                             options    ={options}
                         />
                     )

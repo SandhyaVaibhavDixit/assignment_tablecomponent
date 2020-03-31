@@ -1,45 +1,59 @@
-.Table {
-    width: 100%;
+.mainDiv{
+    width: 90%;
     padding: 50px;
-    border-spacing: 0 15px;
-    text-align: left !important;
-}
 
-.Table tr {
-    background-color: #fff;
-    border: 2x solid #eee;
-}
-
-.Table tbody tr td {
-    padding-left: 5px;
-    padding-right: 5px;
-    text-align: left !important;
-    border-top: 2px solid #eee;
-    border-bottom: 2px solid #eee;
-}
-
-.Table tr:hover {
-    background-color:  #eee;
-    .input, .select{
-        background-color: #eee;
+    .addDiv {
+        padding-top: 100px;
+        float: left;
     }
 }
 
-.Table tbody tr td:first-child {
-    padding-left: 10px;
-    border-top: 2px solid #eee;
-    border-bottom: 2px solid #eee;
-    border-left: 2px solid #eee;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
+.Table {
+    width: 100%;
+    border-spacing: 0 15px;
+    text-align: left !important;
 
-.Table tbody tr td:last-child {
-    border-top: 2px solid #eee;
-    border-bottom: 2px solid #eee;
-    border-right: 2px solid #eee;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    tr {
+        height: 20px;
+        background-color: #fff;
+        border: 2x solid #eee;
+        
+        td {
+            width: 25%;
+            padding-left: 10px;
+        }
+    }
+
+    tbody tr:hover {
+        background-color:  #eee;
+        .input, .select{
+            background-color: #eee;
+        }
+    }
+    
+    tbody tr td {
+        padding: 5px;
+        text-align: left !important;
+        border-top: 2px solid #eee;
+        border-bottom: 2px solid #eee;
+    }
+    
+    tbody tr td:first-child {
+        padding-left: 10px;
+        border-top: 2px solid #eee;
+        border-bottom: 2px solid #eee;
+        border-left: 2px solid #eee;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    tbody tr td:last-child {
+        border-top: 2px solid #eee;
+        border-bottom: 2px solid #eee;
+        border-right: 2px solid #eee;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }    
 }
 
 .imagebutton {
@@ -47,6 +61,10 @@
     background: transparent;
     text-align: center;
     padding: 1px 6px 1px 6px;
+
+    &:hover{
+        cursor: pointer;  
+      }
 }
 
 .imagebutton > img,

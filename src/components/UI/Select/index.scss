@@ -1,17 +1,63 @@
-.select {
-    border-top-style: hidden;
-    border-right-style: hidden;
-    border-left-style: hidden;
-    border-bottom: 1px solid #eee;
-    outline: none;
-}
 
-.select:hover{
-    background-color: #eee;
-}
-
+$border-background: #d4d4d4;
+$background: #eee;
 
 .invalid {
-    border-bottom: 2px solid red;
-    // background-color: #FDA49A;
+    border-bottom: 2px solid red !important;
+}
+
+.dropdown{
+    width: 100%;
+    position: relative; 
+    display: inline-block;
+    border-bottom: 1px solid $background; 
+
+    &:hover{
+        border-bottom: 2px solid grey;
+        background-color: #eee;
+    }
+    .button{
+        width: 100%;
+        margin-left: 5px;
+        //padding: 5px 15px;
+        border: none;
+        text-align: left; 
+        background: transparent;
+        &:focus{
+            outline: none;
+        }
+    }
+    .noContent{
+        display: none;
+    }
+    
+    .dropContent{
+        width: 100%;
+        position: absolute;
+        z-index: 19;
+        background-color: white;
+        padding-inline-start: 0px;
+        li{
+            display: block;
+            padding:5px;
+            font-size: 12px;
+            color: black;
+            border: 1px solid $background ;
+            &:hover{
+            background-color: $background;
+            cursor: pointer;
+             }
+             &:first-child{
+                 border-radius: 5px 5px 0 0;
+             }
+             &:last-child{
+                border-radius: 0 0 5px 5px;
+            }
+        }  
+    } 
+    .arrow {
+        float: right;
+        padding-left: 2px;
+        color: $background;
+    }
 }

@@ -1,14 +1,14 @@
 .div {
-    margin-left: 2px;
     border-bottom: 1px solid #eee;    
 }
-
+ 
 .div:hover{
     border-bottom: 2px solid grey;
     background-color: #eee;
 }
 
 .input {
+    width: 90%;
     border-style: hidden;
     outline: none;
 }
