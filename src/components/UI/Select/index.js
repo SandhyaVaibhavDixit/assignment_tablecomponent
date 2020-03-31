@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './index.scss'
-import UpIcon from '../../../assets/icons/up.png';
-import DownIcon from '../../../assets/icons/down.png';
+import UpIcon from '../../../assets/icons/Up.png';
+import DownIcon from '../../../assets/icons/Down.png';
 
 export const Select = (props) => {
     const { isValid, rowKey, name, value, onChange, options } = props;
