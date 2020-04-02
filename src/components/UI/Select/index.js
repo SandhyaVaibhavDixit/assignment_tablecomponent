@@ -12,9 +12,9 @@ export const Select = (props) => {
     
     const dropDownItems = options.map((option, index) => {
         return (<li 
-                    value={option.value} 
-                    key={index}
-                    onClick={()=>selectHandler(option.value)}> 
+                    value   ={option.value} 
+                    key     ={index}
+                    onClick ={ () => selectHandler(option.value)}> 
                     {option.text}
                 </li>
         );
@@ -39,17 +39,22 @@ export const Select = (props) => {
         dropDownClass = ['noContent'];
     }
     
-    let divClass = ['dropdown']
+    let divClass = ['dropdown'];
+
     if (!isValid) {
         divClass.push('invalid');
     }
     
+    const selectedValue = value === '' ? 'Select an item' : value;
+
     return(
         <div className={divClass.join(' ')}>
             <button 
-                className='button'
-                onClick={() => showContent()}>
-                {value === '' ? 'Select an item' : value}
+                className ='button'
+                onClick   ={ () => showContent()}>
+
+                {selectedValue}
+
                 <span className='arrow'>{arrow}</span>
             </button>
             <div>

@@ -53,33 +53,28 @@ export const TableBuilder = ( props ) => {
         }
     }
 
-    //Input and select on change handler. 
+    const updateState = (key, name, value) =>{
+        const updatedState = state.map(row => {
+            if ( row.key === key ) { 
+                row[name] = value
+            }
+            return row;
+        });
+
+        //Update state.
+        setState(updatedState);
+    }
+
+    //Input change handler. 
     const onChange = (key,  e) => {
         const { name, value } = e.target;
-
-        const updatedState = state.map(row => {
-            if ( row.key === key ) { 
-                row[name] = value
-            }
-            return row;
-        });
-
-        //Update state.
-        setState(updatedState);
+       
+        updateState(key, name, value)
     };
 
+    //Select change handler.
     const onSelectChange = (key, name, value) => {
-
-        console.log(key + ' : ' + name +' : ' + value );
-        const updatedState = state.map(row => {
-            if ( row.key === key ) { 
-                row[name] = value
-            }
-            return row;
-        });
-
-        //Update state.
-        setState(updatedState);
+        updateState(key, name, value);
     }
 
     //Delete row.
@@ -107,7 +102,6 @@ export const TableBuilder = ( props ) => {
             const emptyRowRef = hasEmptyRowMatch(eachTableRow) === true ? emptyRef : null;
 
             const onInputChange = (e) => onChange(eachTableRow.key, e);
-           // const onSelectChange = () => onSelectChange(eachTableRow.key);
             const onRowDelete   = () => onDelete(eachTableRow.key);
 
             return (
@@ -138,7 +132,7 @@ export const TableBuilder = ( props ) => {
     return (
         <div className="mainDiv">
             <div className="tableDiv">
-                <table className="Table">
+                <table className="table">
                     <thead>
                         <tr>
                             {renderTableHeader()}

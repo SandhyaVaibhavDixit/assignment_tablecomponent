@@ -1,33 +1,35 @@
+$background: #eee;
+
 .div {
     border-bottom: 1px solid #eee;    
-}
- 
-.div:hover{
-    border-bottom: 2px solid grey;
-    background-color: #eee;
-}
+    
+    &:hover{
+        border-bottom: 2px solid grey;
+        background-color: $background;
+    }
 
-.input {
-    width: 90%;
-    border-style: hidden;
-    outline: none;
-}
+    .prefix{
+        text-decoration: none;
+        color: black;
+        font-size: small;
+        padding: 1px 0px;
 
-.prefix{
-    text-decoration: none;
-    color: black;
-    font-size: small;
-    padding: 1px 0px;
-}
+        &:hover{
+            background-color: $background;
+        }
+    }
 
-.prefix:hover{
-    background-color: #eee;
-}
+    .input {
+        width: 90%;
+        border-style: hidden;
+        outline: none;
 
-.input:hover{
-    background-color: #eee;
-}
+        &:hover{
+            background-color: $background;
+        }
+    }
 
-.invalid {
-    border-bottom: 2px solid red;
+    .invalid {
+        border-bottom: 2px solid red;
+    }
 }

@@ -78,8 +78,7 @@ export const RowBuilder = (props) => {
         return(
             <button
                 className="imagebutton"
-                onClick={onDelete}
-                >
+                onClick={onDelete}>
                 <img
                     src ={DeleteIcon}
                     alt ="Delete">
